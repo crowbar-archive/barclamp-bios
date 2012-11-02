@@ -1,9 +1,8 @@
-  {  "id": "bios-set-PowerEdgeC6220-Storage",
-     "style": "new_pec",
-     "attributes": { 
-        "virtualization_technology" : "disabled",
-        "vt_for_direct_io" : "disabled",
-        "sriov_global_enable" : "disabled"
-
-     }
-  }    
+{  "id": "bios-set-PowerEdgeC6220-Storage",
+   "style": "new_pec",
+   "attributes": {
+       "virtualization_technology" : "disabled",
+       "vt_for_direct_io" : "disabled",
+       "sriov_global_enable" : "disabled"
+   }
+}
