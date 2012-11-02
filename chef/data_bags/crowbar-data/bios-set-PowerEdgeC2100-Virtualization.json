@@ -1,0 +1,16 @@
+{
+  "id": "bios-set-PowerEdgeC2100-Virtualization",
+  "attributes": {
+    "Intel VT_d": [
+      "4803",
+      "Enable Intel VT_d"
+    ],
+    "SR_IOV Supported": [
+      "4805",
+      "Enable SR_IOV Supported"
+    ]
+  },
+  "versions": [
+    "C99Q3B22"
+  ]
+}

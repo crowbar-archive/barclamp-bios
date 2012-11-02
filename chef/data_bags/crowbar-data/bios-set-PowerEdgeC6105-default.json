@@ -1,0 +1,60 @@
+{
+  "id": "bios-set-PowerEdgeC6105-default",
+  "attributes": {
+    "DHCP Enabled": [
+      "4810",
+      "Disable to get BMC IP address through DHCP server"
+    ],
+    "CS Sparing Enable": [
+      "5125",
+      "Not reserve a spare memory rank in each channel"
+    ],
+    "ACPI SRAT Table": [
+      "4859",
+      "Enable the building of ACPI SRAT Table_ When this option is Enabled_ NUMA is supported_"
+    ],
+    "Network Drives_1st Drive": [
+      "251",
+      "The first NIC is used for PXE boot_ followed by NIC2"
+    ],
+    "Quiet Boot": [
+      "250",
+      "Disabled the display of the splash or summary screen_ The user is able to see the detail of the POST messages"
+    ],
+    "Wait For _F1_ If Error": [
+      "024E",
+      "Disabled the BIOS from prompting for F1_F2 on error_ BIOS pauses at F1_F2 prompt"
+    ],
+    "BMC LAN Port Configuration": [
+      "480E",
+      "Specifies the current mode of operation for the BMC network interface to Dedicated_Nic"
+    ],
+    "NIC1 _ 82576": [
+      "002D",
+      "Enable the system_s primary embedded network interface controller _full_function__ including its PXE boot_ROM_"
+    ],
+    "Video Enumeration": [
+      "87",
+      "The onboard video controller is used for boot_time messages_"
+    ],
+    "Force PXE first": [
+      "4022",
+      "Whenever the BIOS boots up the system_ the first PXE_capable device is inserted as the first device in the boot sequence_  Enabling this feature causes the BIOS operation to occur on the next and all subsequent boots and causes a change in the system_s defined boot sequence _unlike tokens 93h and 94h__  The BIOS chooses the first PXE_capable device as the system_s onboard network controller_ if present and enabled_ or the first bootable network device found in the system_s standard PCI search order _ whichever comes first_"
+    ],
+    "Restore on AC Power Loss": [
+      "00A3",
+      "After an AC power loss_ when AC power is restored_ the system will power on_"
+    ],
+    "Quick Boot": [
+      "4801",
+      "Allows BIOS to skip certain tests while booting_ This will decrease the time needed to boot the system_"
+    ],
+    "NIC2 _ 82576": [
+      "00BC",
+      "Enable the system_s secondary embedded network interface controller _full_function__ including its PXE boot_ROM_"
+    ]
+  },
+  "versions": [
+    "1.7.9"
+  ]
+}

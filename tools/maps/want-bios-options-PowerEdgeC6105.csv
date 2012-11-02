@@ -1,0 +1,18 @@
+Token,Setup option,Description,Want
+002D,NIC1 - 82576,"Enable the system’s primary embedded network interface controller (full-function), including its PXE boot-ROM.",y
+87,Video Enumeration,The onboard video controller is used for boot-time messages.,y
+00A3,Restore on AC Power Loss,"After an AC power loss, when AC power is restored, the system will power on.",y
+00BC,NIC2 - 82576,"Enable the system’s secondary embedded network interface controller (full-function), including its PXE boot-ROM.",y
+024E,Wait For ‘F1’ If Error,Disabled the BIOS from prompting for F1/F2 on error. BIOS pauses at F1/F2 prompt,y
+250,Quiet Boot      ,Disabled the display of the splash or summary screen. The user is able to see the detail of the POST messages,y
+251,Network Drives/1st Drive  ,"The first NIC is used for PXE boot, followed by NIC2",y
+4022,Force PXE first,"Whenever the BIOS boots up the system, the first PXE-capable device is inserted as the first device in the boot sequence.  Enabling this feature causes the BIOS operation to occur on the next and all subsequent boots and causes a change in the system's defined boot sequence (unlike tokens 93h and 94h).  The BIOS chooses the first PXE-capable device as the system's onboard network controller, if present and enabled, or the first bootable network device found in the system's standard PCI search order — whichever comes first.",y
+4801,Quick Boot                 ,Allows BIOS to skip certain tests while booting. This will decrease the time needed to boot the system.,y
+4805,SR-IOV,Enable Single Root I/O Virtualization.,virt
+480E,BMC LAN Port Configuration,Specifies the current mode of operation for the BMC network interface to Dedicated-Nic,y
+4810,DHCP Enabled,Disable to get BMC IP address through DHCP server,y
+4855,Secure Virtual Machine Mode,Enable Secure Virtual Machine Mode,virt
+4859,ACPI SRAT Table,"Enable the building of ACPI SRAT Table. When this option is Enabled, NUMA is supported.",y
+48B8,IOMMU,Enabled IOMMU,virt
+5125,CS Sparing Enable,Not reserve a spare memory rank in each channel,y
+ 

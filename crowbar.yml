@@ -1,0 +1,69 @@
+# Copyright 2011, Dell, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: RobHirschfeld
+#
+
+barclamp:
+  name: dell_bios
+  display: BIOS
+  version: 0
+  member:
+    - dell_branding
+
+crowbar:
+  layout: 2
+  order: 17
+  chef_order: 17
+  run_order: 17
+
+build_cmd: build.sh
+
+gems:
+  - libxml-ruby
+  - xml-simple
+
+supported_platforms:
+  - PowerEdge R710
+  - PowerEdge R610
+  - PowerEdge R720xd
+  - PowerEdge R620
+  - PowerEdge R720
+
+extra_files:
+  # These files must be kept in sync with the ones in bc-template-dell_bios.json
+  # PEC 2100 BIOS and BMC
+  - http://downloads-us.dell.com/bios/PECC2100_BIOS_LX_R312645.BIN dell_bios/2100
+  - http://downloads-us.dell.com/FOLDER00699088M/1/C2100_ESM_Firmware_HJR3N_LN32_1.82_A01.BIN dell_bios/2100
+  # PEC 6100 BIOS and BMC
+  - http://downloads-us.dell.com/FOLDER00709304M/1/BIOS_WDKXK_LN32_1.69_A01.BIN dell_bios/6100
+  - http://downloads-us.dell.com/FOLDER00718482M/1/ESM_Firmware_4WCD9_LN32_1.29_A01.BIN dell_bios/6100
+  # PEC 6105 BIOS and BMC
+  - http://downloads-us.dell.com/FOLDER00711145M/1/C6105_BIOS_DV4P8_LN32_2.1.4_A00.BIN dell_bios/6105
+  - http://downloads-us.dell.com/FOLDER00759656M/1/ESM_Firmware_FPM7N_LN32_1.26_A01.BIN dell_bios/6105
+  # PEC 6145 BIOS and BMC
+  - http://downloads-us.dell.com/FOLDER00693128M/1/C6145_BIOS_FNC16_LN32_2.8.0_A01.BIN dell_bios/6145
+  - http://downloads-us.dell.com/FOLDER00758520M/1/C6145_ESM_Firmware_KHJG3_LN32_1.10_A01.BIN dell_bios/6145
+  # PEC 6220 BIOS and BMC
+  - http://downloads-us.dell.com/FOLDER00701464M/1/C6220_BIOS_134W8_LN32_1.0.28_A02.BIN dell_bios/6220
+  - http://downloads-us.dell.com/FOLDER00857695M/1/C6220_ESM_Firmware_DCCV7_LN32_1.24.BIN dell_bios/6220
+  # PEC 8000 BIOS and BMC
+  - http://downloads-us.dell.com/FOLDER00814705M/1/C8000_BIOS_M23F8_LN32_1.0.24_A00.BIN dell_bios/8000
+  - http://downloads-us.dell.com/FOLDER00572501M/1/C8000_ESM_Firmware_P6JDN_LN32_1.23.BIN dell_bios/8000
+  # Utility for configuring Dell-specific BMC settings on PEC gear.
+  - http://poweredgec.com/files/bmc-2012-08-31.tgz dell_bios/tools
+  # Utility for configuring BIOS setting on PEC gear.
+  - http://poweredgec.com/files/setupbios-2012-08-16.tgz dell_bios/tools
+  # Utility for doing various things to the ASPEED BMC and BIOS.
+  - http://upload.aspeedtech.com/SOC/socflash_v10601.zip dell_bios/tools

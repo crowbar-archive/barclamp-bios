@@ -1,0 +1,29 @@
+#!/bin/bash
+die() { echo "$@"; exit 1; }
+
+if [[ -f /etc/lsb-release ]]; then
+    . /etc/lsb-release
+elif [[ -f /etc/redhat-release ]]; then
+    DISTRIB_ID="Redhat"
+fi
+pkgdir=/opt/dell/barclamps/bios/updates/wsman
+
+RPMS=(libwsman1-2.2.7-1.x86_64.rpm wsmancli-2.2.7.1-11.x86_64.rpm)
+
+
+
+case $DISTRIB_ID in
+    Ubuntu|Debian)
+        apt-get -y install alien || die "Cannot install alien for RPM handling!"
+        for r in "${RPMS[@]}"; do
+            [[ -f $pkgdir/$r ]] || die "$r does not exist!"
+            alien -i "$pkgdir/$r" || die "Could not install $r"
+        done
+        echo '/usr/lib64' >/etc/ld.so.conf.d/wsman.conf
+        ldconfig;;
+    Redhat|CentOS)
+        for r in "${RPMS[@]}"; do
+            [[ -f $pkgdir/$r ]] || die "$r does not exist!"
+            rpm -Uvh "$pkgdir/$r" || die "Could not install $r"
+        done;;
+esac

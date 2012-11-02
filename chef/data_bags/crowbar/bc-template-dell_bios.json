@@ -1,0 +1,71 @@
+{
+  "id": "bc-template-dell_bios",
+  "description": "manages bios configuration for Dell PEC hardware",
+  "attributes": {
+    "bios": {
+          "bios_setup_enable" : true,
+          "bmc_update_enable": true,
+          "bios_update_enable": true,
+          "debug": true,
+          "max_tries": 3,
+          "updaters": {
+              "PowerEdge C2100" : {  
+                 "bmc" :  "2100/C2100_ESM_Firmware_HJR3N_LN32_1.82_A01.BIN",
+                 "bios" : "2100/PECC2100_BIOS_LX_R312645.BIN"
+              },
+              "C6100" : { 
+                 "bmc":  "6100/ESM_Firmware_4WCD9_LN32_1.29_A01.BIN",
+                 "bios": "6100/BIOS_WDKXK_LN32_1.69_A01.BIN"
+              },
+              "PowerEdge C6105" : {
+                 "bmc":  "6105/ESM_Firmware_FPM7N_LN32_1.26_A01.BIN",
+                 "bios": "6105/C6105_BIOS_DV4P8_LN32_2.1.4_A00.BIN"
+              },
+              "PowerEdge C6220" : {
+                 "bios":  "6220/C6220_BIOS_134W8_LN32_1.0.28_A02.BIN",
+                 "bmc":   "6220/C6220_ESM_Firmware_DCCV7_LN32_1.24.BIN"
+              },
+              "PowerEdge C8000": {
+                 "bios": "8000/C8000_BIOS_M23F8_LN32_1.0.24_A00.BIN",
+                 "bmc":  "8000/C8000_ESM_Firmware_P6JDN_LN32_1.23.BIN"
+              },
+              "PowerEdge R610" : {
+                 "wsman": "true"
+              },
+              "PowerEdge R710" : {
+                 "wsman": "true"
+              },
+              "PowerEdge R620" : {
+                 "wsman": "true"
+              },
+              "PowerEdge R720" : {
+                 "wsman": "true"
+              },
+              "PowerEdge R720xd" : {
+                 "wsman": "true"
+              }
+           }
+       }
+  },
+  "deployment": {
+    "dell_bios": {
+      "crowbar-revision": 0,
+      "element_states": {
+        "dell_bios": [ "update", "hardware-installing", "hardware-updating" ]
+      },
+      "elements": {},
+      "element_order": [
+        [ "dell_bios"  ]
+      ],
+      "config": {
+        "environment": "bios-base-config",
+        "mode": "full",
+        "transitions": true,
+        "transition_list": [
+          "discovered"
+        ]
+      }
+    }
+  }
+}
+

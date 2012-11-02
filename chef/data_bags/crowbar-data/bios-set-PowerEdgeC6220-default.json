@@ -1,0 +1,66 @@
+  {  "id": "bios-set-PowerEdgeC6220-default",
+     "style": "new_pec",
+     "versions": ["1.0.21"],
+     "attributes": { 
+        "boot_mode" : "bios",       
+        "force_pxe_boot_only" : "disabled",       
+	"boot_device_1" : "network",
+	"boot_device_2" : "raid",
+	"boot_device_3" : "hard_disk",
+        "bmc_lan_port_configuration" : "dedicatednic",
+        "embedded_nic1" : "enabled_with_pxe",       
+        "embedded_nic2" : "enabled_with_pxe",       
+        "quiet_boot" : "enabled",       
+        "pause_on_errors" : "disabled",       
+        "embedded_video_controller" : "enabled",       
+        "acpi_spmi_table" : "enabled",       
+        "nic_enumeration" : "onboard",       
+	
+        "sled_level_policy" : "chassis_level",       
+        "chassis_level_policy" : "power_off",
+        "restore_on_ac_power_loss" : "last_state",       
+        "power_button" : "enabled",       
+        "power_saving_features" : "disabled",       
+	"energy_efficient_policy" : "performance",
+
+        "ioat_dma_engine" : "enabled",       
+
+        "power_management" : "maximum_performance",       
+        "active_processor_cores" : "all_cores",       
+        "frequency_ratio" : "auto",       
+        "qpi_frequency" : "auto",       
+        "memory_turbo_mode" : "enabled",       
+        "cstates" : "enabled",       
+        "c1e_state" : "enabled",       
+        "c6_state" : "enabled",       
+        "c7_state" : "enabled",       
+        "direct_cache_access" : "enabled",       
+        "hyperthreading_technology" : "enabled",       
+        "adjacent_cache_line_prefetch" : "enabled",       
+        "hardware_prefetcher" : "enabled",       
+        "dcu_ip_prefetcher" : "enabled",       
+        "dcu_streamer_prefetcher" : "enabled",       
+
+        "memory_frequency" : "auto",       
+        "turbo_mode" : "enabled",       
+        "memory_throttling_mode" : "disabled",       
+        "memory_operating_voltage" : "auto",       
+
+        "embedded_sata_controller" : "ahci",       
+        "sata_port0" : "auto",       
+        "sata_port1" : "auto",       
+        "sata_port2" : "auto",       
+        "sata_port3" : "auto",       
+        "sata_port4" : "auto",       
+        "sata_port5" : "auto",       
+        "embedded_sata_link_rate" : "auto",       
+
+        "onboard_lan_aspm" : "disabled",       
+        "pcie_slot_aspm" : "disabled",       
+        "nbsb_link_aspm" : "disabled",       
+        "mezzanine_slot_aspm" : "disabled",       
+        "pcie_generation" : "gen3"       
+
+
+     }
+  }    
