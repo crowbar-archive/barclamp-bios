@@ -62,8 +62,8 @@ extra_files:
   - http://downloads-us.dell.com/FOLDER00814705M/1/C8000_BIOS_M23F8_LN32_1.0.24_A00.BIN dell_bios/8000
   - http://downloads-us.dell.com/FOLDER00572501M/1/C8000_ESM_Firmware_P6JDN_LN32_1.23.BIN dell_bios/8000
   # Utility for configuring Dell-specific BMC settings on PEC gear.
-  - http://poweredgec.com/files/bmc-2012-08-31.tgz dell_bios/tools
+  - http://poweredgec.com/files/bmc-2012-10-17.tgz dell_bios/tools
   # Utility for configuring BIOS setting on PEC gear.
-  - http://poweredgec.com/files/setupbios-2012-08-16.tgz dell_bios/tools
+  - http://poweredgec.com/files/setupbios-2012-10-10.tgz dell_bios/tools
   # Utility for doing various things to the ASPEED BMC and BIOS.
   - http://upload.aspeedtech.com/SOC/socflash_v10601.zip dell_bios/tools
