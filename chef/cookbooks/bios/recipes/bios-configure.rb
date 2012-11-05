@@ -93,27 +93,17 @@ else
       action   :configure
     end
   when "unified_pec"
-    raw_tokens = []
-    symbolic_tokens = {}
-    current_tokens = {}
     need_reboot = false
-    symbolic_change_map = (node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map] rescue {})
-    raw_change_map = (node[:crowbar_wall][:dell_bios][:pec_raw_change_map] rescue {})
+    all_tokens_set = true
     node[:crowbar_wall] ||= Mash.new
     node[:crowbar_wall][:dell_bios] ||= Mash.new
-    raw_tokens = []
-    IO.popen("#{pgmname} list_tokens",'r') do |f|
-        raw_tokens = f.readlines
-      end
-    unless node[:crowbar_wall][:dell_bios][:initial_raw_tokens]
-      node[:crowbar_wall][:dell_bios][:initial_raw_tokens] = raw_tokens
-    else
-      node[:crowbar_wall][:dell_bios][:current_raw_tokens] ||= []
-      node[:crowbar_wall][:dell_bios][:current_raw_tokens] << raw_tokens
-    end
-    node.save
-
+    node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map] ||= Mash.new
+    node[:crowbar_wall][:dell_bios][:pec_raw_change_map] ||= Mash.new
+    symbolic_change_map = node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map].to_hash
+    raw_change_map = node[:crowbar_wall][:dell_bios][:pec_raw_change_map].to_hash
     # Split out raw tokens from symbolic tokens for the values we want to set.
+    raw_tokens = []
+    symbolic_tokens = {}
     values.each do |name,val|
       if name == "raw_tokens"
         raw_tokens = val.map{|tok| sprintf("%x",tok)}
@@ -122,6 +112,7 @@ else
       end
     end
     # Get the current state of all the symbolic token settings.
+    current_tokens = {}
     IO.popen("#{pgmname} setting save",'r') do |f|
       f.each do |raw_line|
         line = raw_line.gsub(/[#;].*/,'').strip.chomp
@@ -135,8 +126,10 @@ else
     # flag that we want a reboot.
     symbolic_tokens.each do |name,val|
       next if current_tokens[name] && (current_tokens[name] == val)
-      if symbolic_change_map[name] && symbolic_change_map[name][:tries] > 5
-        raise(RangeError.new,"Tried #{symbolic_change_map[name][:tries]} to update #{name} from #{current_tokens[name]} to #{val}. Giving up.")
+      if symbolic_change_map[name] && (symbolic_change_map[name][:tries] > 2)
+        Chef::Log.error("Tried #{symbolic_change_map[name][:tries]} times to update #{name} from #{current_tokens[name]} to #{val}. Giving up.")
+        all_tokens_set = false
+        next
       elsif symbolic_change_map[name]
         symbolic_change_map[name][:tries] += 1
       else
@@ -155,8 +148,10 @@ else
     # If any are not set, set them and flag that we need a reboot.
     raw_tokens.each do |tok|
       next if %x{ "${pgmname}" test "#{tok}" }.strip.chomp == "set"
-      if raw_change_map[tok] && raw_change_map[tok] > 5
-        raise(RangeError.new,"Tried #{raw_change_map[tok]} tries to set #{tok}. Giving up.")
+      if raw_change_map[tok] && (raw_change_map[tok] > 2)
+        Chef::Log.error("Tried #{raw_change_map[tok]} times to set #{tok}. Giving up.")
+        all_tokens_set = false
+        next
       elsif raw_change_map[tok]
         raw_change_map[tok] += 1
       else
@@ -167,18 +162,27 @@ else
         code "#{pgmname} set #{tok}"
       end
     end
-    node[:crowbar_wall] ||= Mash.new
-    node[:crowbar_wall][:dell_bios] ||= Mash.new
     node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map] = symbolic_change_map
     node[:crowbar_wall][:dell_bios][:pec_raw_change_map] = raw_change_map
-    node.save
     if need_reboot
+      IO.popen("#{pgmname} list_tokens",'r') do |f|
+        unless node[:crowbar_wall][:dell_bios][:initial_raw_tokens]
+          node[:crowbar_wall][:dell_bios][:initial_raw_tokens] = f.readlines
+        else
+          node[:crowbar_wall][:dell_bios][:current_raw_tokens] ||= []
+          node[:crowbar_wall][:dell_bios][:current_raw_tokens] << f.readlines
+        end
+      end
       bash "Reboot to apply BIOS settings" do
         code "reboot && sleep 120"
       end
-    else
+    elsif all_tokens_set
       Chef::Log.info("BIOS: All bios settings as expected")
+    else
+      Chef::Log.error("BIOS: Unable to update all BIOS settings after multiple retries.")
+      Chef::Log.error("BIOS: Will continue with install.")
     end
+    node.save
   when "new_pec"
     values.each { | name, set_value|
       log("setting #{name} to #{set_value}")
