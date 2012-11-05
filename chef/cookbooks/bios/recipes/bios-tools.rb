@@ -62,3 +62,13 @@ EOC
   action :nothing
 end
 a.run_action(:run)
+
+a = bash "Unwedge BMC" do
+  code <<EOC
+[[ -x /tmp/unbmc.sh ]] && exit 0
+cp /update/unbmc.sh /tmp
+/tmp/unbmc.sh || :
+EOC
+  action :nothing
+end
+a.run_action(:run)
