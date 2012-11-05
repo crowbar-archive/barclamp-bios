@@ -1,0 +1,13 @@
+{
+  "id": "bios-set-PowerEdgeC6145-default",
+  "attributes": {
+    "force_pxe_first": "enabled",
+    "quick_boot": "disabled",
+    "quiet_boot": "disabled",
+    "restore_on_ac_power_loss": "power_on"
+  },
+  "versions": [
+    "2.8.0"
+  ],
+  "style": "unified_pec"
+}

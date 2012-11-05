@@ -1,0 +1,12 @@
+{
+  "id": "bios-set-PowerEdgeC6145-Storage",
+  "attributes": {
+    "SR_IOV_support": "disabled",
+    "secure_virtual_machine_mode": "disabled",
+    "iommu": "disabled"
+  },
+  "versions": [
+    "2.8.0"
+  ],
+  "style": "unified_pec"
+}

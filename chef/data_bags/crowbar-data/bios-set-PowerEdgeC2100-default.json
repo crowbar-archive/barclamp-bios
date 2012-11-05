@@ -1,80 +1,16 @@
 {
   "id": "bios-set-PowerEdgeC2100-default",
   "attributes": {
-    "DHCP Enabled": [
-      "4810",
-      "Disable to get BMC IP address through DHCP server"
+    "NUMA_support": "enabled",
+    "raw_tokens": [
+      593,
+      18446,
+      18448
     ],
-    "NIC1 _ KAWELA": [
-      "002D",
-      "Enable the system_s primary embedded network interface controller _full_function__ including its PXE boot_ROM_"
-    ],
-    "Network Drives_1st Drive": [
-      "251",
-      "The first NIC is used for PXE boot_ followed by NIC2"
-    ],
-    "Quiet Boot": [
-      "250",
-      "Disabled the display of the splash or summary screen_ The user is able to see the detail of the POST messages"
-    ],
-    "QPI Bandwidth Priority": [
-      "484A",
-      "Set Intel QPI Randwidth Priority _RTID_ to Compute _ 32_24_32"
-    ],
-    "Active Processor Cores": [
-      "026E",
-      "All of cores to enable in each processor package"
-    ],
-    "Wait For _F1_ If Error": [
-      "024E",
-      "Disabled the BIOS from prompting for F1_F2 on error_ BIOS pauses at F1_F2 prompt"
-    ],
-    "NIC2 _ KAWELA": [
-      "00BC",
-      "Enable the system_s secondary embedded network interface controller _full_function__ including its PXE boot_ROM_"
-    ],
-    "NUMA Support": [
-      "4833",
-      "Enable NUMA is efficiently execute software for NUMA aware OS"
-    ],
-    "Onboard VGA device": [
-      "4845",
-      "Enable onboard VGA"
-    ],
-    "Intel___ HT Technology": [
-      "4827",
-      "Enabled for thread per enabled core is enabled"
-    ],
-    "BMC LAN Port Configuration": [
-      "480E",
-      "Specifies the current mode of operation for the BMC network interface to Dedicated_Nic"
-    ],
-    "Execute_Disable Bit Capability": [
-      "141",
-      "Enable Execute_Disable Bit Capability"
-    ],
-    "Force PXE first": [
-      "4022",
-      "Whenever the BIOS boots up the system_ the first PXE_capable device is inserted as the first device in the boot sequence_  Enabling this feature causes the BIOS operation to occur on the next and all subsequent boots and causes a change in the system_s defined boot sequence _unlike tokens 93h and 94h__  The BIOS chooses the first PXE_capable device as the system_s onboard network controller_ if present and enabled_ or the first bootable network device found in the system_s standard PCI search order _ whichever comes first_"
-    ],
-    "Restore on AC Power Loss": [
-      "00A3",
-      "After an AC power loss_ when AC power is restored_ the system will power on_"
-    ],
-    "USB 2_0 Controller": [
-      "008C",
-      "Enable USB 2_0 control support"
-    ],
-    "Quick Boot": [
-      "4801",
-      "Allows BIOS to skip certain tests while booting_ This will decrease the time needed to boot the system_"
-    ],
-    "Intel_R_ Virtualization Tech": [
-      "014B",
-      "Enable for a VMM to utilize the addition HW Caps_ provided by Intel_R_ Virtualization Tech"
-    ]
+    "quiet_boot": "disabled"
   },
   "versions": [
     "C99Q3B22"
-  ]
+  ],
+  "style": "unified_pec"
 }

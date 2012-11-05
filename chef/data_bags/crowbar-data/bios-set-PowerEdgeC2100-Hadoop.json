@@ -1,16 +1,11 @@
 {
   "id": "bios-set-PowerEdgeC2100-Hadoop",
   "attributes": {
-    "QPI Bandwidth Priority": [
-      "484B",
-      "Set Intel QPI Randwidth Priority _RTID_ to IO _ 32_16_40"
-    ],
-    "VT enable": [
-      "014Ah",
-      "Virtualization Tech _VT_Virtuahzatlon Tech _VT__ Disabled"
-    ]
+    "virtualization_tech": "disabled",
+    "intel_QPI_bandwidth_priority": "io"
   },
   "versions": [
     "C99Q3B22"
-  ]
+  ],
+  "style": "unified_pec"
 }

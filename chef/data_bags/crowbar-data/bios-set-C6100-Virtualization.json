@@ -1,16 +1,10 @@
 {
   "id": "bios-set-C6100-Virtualization",
   "attributes": {
-    "SR_IOV": [
-      "4865h",
-      "SR_IOV Supported_ Enabled support of the SR_IOV function_"
-    ],
-    "VT enable": [
-      "014Bh",
-      "Virtualization Tech _VT_Virtuahzatlon Tech _VT__ Enabled Intel Vrtualizatlon Technology for"
-    ]
+    "SR_IOV_support": "enabled"
   },
   "versions": [
-    "1.64"
-  ]
+    "1.69"
+  ],
+  "style": "unified_pec"
 }

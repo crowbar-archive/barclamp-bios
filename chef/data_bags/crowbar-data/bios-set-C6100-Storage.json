@@ -1,16 +1,11 @@
 {
   "id": "bios-set-C6100-Storage",
   "attributes": {
-    "QPI Bandwidth Priority": [
-      "4855h",
-      "Intel QPI Bandwidth Priority_ Configured the priority of requests on the QPI bus for IO traffic_"
-    ],
-    "VT enable": [
-      "014Ah",
-      "Virtualization Tech _VT_Virtuahzatlon Tech _VT__ Disabled"
-    ]
+    "virtualization_tech": "disabled",
+    "intel_QPI_bandwidth_priority": "io"
   },
   "versions": [
-    "1.64"
-  ]
+    "1.69"
+  ],
+  "style": "unified_pec"
 }

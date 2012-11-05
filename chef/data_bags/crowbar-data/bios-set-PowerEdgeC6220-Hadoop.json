@@ -1,5 +1,5 @@
 {
-  "id": "bios-set-PowerEdgeC6220-Storage",
+  "id": "bios-set-PowerEdgeC6220-Hadoop",
   "attributes": {
     "vt_for_direct_io": "disabled",
     "sriov_global_enable": "disabled",

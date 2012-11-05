@@ -1,5 +1,5 @@
 {
-  "id": "bios-set-PowerEdgeC6220-default",
+  "id": "bios-set-PowerEdgeC8220-default",
   "attributes": {
     "power_saving_features": "disabled",
     "ioat_dma_engine": "enabled",
@@ -8,15 +8,15 @@
     "memory_throttling_mode": "disabled",
     "embedded_nic2": "enabled_with_pxe",
     "nbsb_link_aspm": "disabled",
+    "embedded_sata_controller": "off",
     "chassis_level_policy": "power_off",
-    "boot_mode": "uefi",
     "restore_on_ac_power_loss": "last_state",
     "memory_turbo_mode": "enabled",
     "boot_device_3": "hard_disk",
     "boot_device_2": "raid"
   },
   "versions": [
-    "1.0.28"
+    "1.0.24"
   ],
   "style": "unified_pec"
 }

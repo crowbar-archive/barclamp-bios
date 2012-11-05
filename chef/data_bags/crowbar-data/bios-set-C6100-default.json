@@ -1,80 +1,16 @@
 {
   "id": "bios-set-C6100-default",
   "attributes": {
-    "BMC NIC": [
-      "4823h",
-      "Set BMC NIC_ Configured the current BMC network to Dedicated NIC_"
-    ],
-    "IOAT2": [
-      "01cfh",
-      "IOAT2_ Enabled support for Intel I_O Acceleration Technology_"
-    ],
-    "Execute Disable": [
-      "0141h",
-      "Execute_Disable Bit Capability Execute_Disable Bit Capability_ Enabled allowing memory to be marked as executable or non_executable_ whencombined with a supporting operating system_"
-    ],
-    "BMC IP SRC": [
-      "4825h",
-      "BMC IP address source_ Configured the current BMC IP address to be a specified static address_"
-    ],
-    "F1 Error": [
-      "024dh",
-      "Wait For _Fl If Error_ Disabled the BIOS from prompting for F1 on error_"
-    ],
-    "Quiet Boot": [
-      "0250h",
-      "Quiet Boot_ Disabled the display of the splash or summary screen_ The user is able to see the detail of the POST messages_"
-    ],
-    "QPI Bandwidth Priority": [
-      "4854h",
-      "Intel QPI Bandwidth Priority_ Configured the priority of requests on the QPI bus for computational traffic_"
-    ],
-    "NIC2 ROM": [
-      "00BCh",
-      "NIC 2 OptIon ROM_ Enabled onboard Intel 82576 NIC port 2 option ROM_"
-    ],
-    "Video Controller": [
-      "0087h",
-      "On_board Video Controller_ Enabled on_board video device_"
-    ],
-    "IPMI Detect": [
-      "4844h",
-      "IPMI Detection_ Enabled making BMC device can be detected by 05es which support PnP and IPMI drivers_"
-    ],
-    "Processor Cores": [
-      "026eh",
-      "Active Processor Cores_ Configured number of cores to enable in each processor package_"
-    ],
-    "Force PXE": [
-      "4022h",
-      "Force PXE First_ Enabled force PXE devices to be the first boot devices_"
-    ],
-    "NIC1 ROM": [
-      "002dh",
-      "NIC 1 OptIon ROM_ Enabled onboard Intel 82576 NIC port 1 option ROM_"
-    ],
-    "NIC PXE": [
-      "481bh",
-      "NIC Function Support_ Configured NIC function for PXE support_"
-    ],
-    "Hyper Threading": [
-      "00d1h",
-      "Hyper_Threading Technology _HT__ Enabled Intel Hyper_Threading Technology_"
-    ],
-    "AC Power": [
-      "4846h",
-      "Restore on AC Power Loss_ Configured system power recovery behavior as Power On after restoring on AC power loss"
-    ],
-    "Quick Bookt": [
-      "4031h",
-      "Quick Boot_ Enabled allowing BIOS to skip certain tests while POST_"
-    ],
-    "NUMA": [
-      "01c5h",
-      "NUMA Support Enabled node interleaving for processors to have asymmetric access to local and remote memory_"
+    "IOAT2": "enabled",
+    "virtualization_tech": "enabled",
+    "raw_tokens": [
+      16418,
+      18467,
+      18469
     ]
   },
   "versions": [
-    "1.64"
-  ]
+    "1.69"
+  ],
+  "style": "unified_pec"
 }
