@@ -13,15 +13,14 @@ product.strip!
   next unless (node["bios"]["updaters"][product][t] rescue nil)
   f = node["bios"]["updaters"][product][t]
   if f.include?('/')
-    directory "/tmp/#{f.split('/')[0..-1].join('/')}" do
+    directory "/tmp/#{f.split('/')[0..-2].join('/')}" do
       recursive true
     end
   end
   remote_file "/tmp/#{f}" do
-    source "@@provisioner_server/files/dell_bios/#{f}"
+    source "#{@@provisioner_server}/files/dell_bios/#{f}"
     mode '0755'
     action :create_if_missing
-    ignore_failure true
   end
 end
 

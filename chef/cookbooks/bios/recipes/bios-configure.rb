@@ -37,7 +37,7 @@ elsif (style != "wsman") && ! (
 else
   Chef::Log.info("Will configure #{product} BIOS #{bios_version} parameters")
   case style
-  when "legacy","new_pec"
+  when "legacy","new_pec","unified_pec"
     # Run the statically linked version of setupbios on the ubuntu platform
     pgm_dir = "/opt/bios/setupbios"
     pgmname = "#{pgm_dir}/alternate_version/setupbios.static"
@@ -99,6 +99,23 @@ else
       values          values
       problem_file "/var/log/chef/hw-problem.log"
       action   :configure
+    end
+  when "unified_pec"
+    values.each do |name,val|
+      if name == "raw_tokens"
+        val.each do |tok|
+          tok = sprintf("%x",tok)
+          bash "set raw D4 token #{tok}" do
+            cwd pgm_dir
+            code "#{pgmname} set #{tok}"
+          end
+        end
+      else
+        bash "set #{name} to #{val}" do
+          cwd pgm_dir
+          code "#{pgmname} setting set #{name} #{val}"
+        end
+      end
     end
   when "new_pec"
     values.each { | name, set_value|

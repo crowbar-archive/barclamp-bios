@@ -8,8 +8,8 @@
 
 include_recipe "bios::bios-common"
 
-bmc="bmc-2012-08-31.tgz"
-setupbios="setupbios-2012-08-16.tgz"
+bmc="bmc-2012-10-17.tgz"
+setupbios="setupbios-2012-10-10.tgz"
 socflash="socflash_v10601.zip"
 
 
