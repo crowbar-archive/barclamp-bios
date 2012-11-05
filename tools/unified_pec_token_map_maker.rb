@@ -232,11 +232,6 @@ reader.each do |row|
     STDERR.puts("Line #{line}: #{token} is not a setting name that setupbios will understand!")
     exit 1
   end
-  if (bios_schemas[sys_name].default(token) == setting) &&
-      (crowbar_config == "default")
-    STDERR.puts("Line #{line}: #{token} is being set to its default value. Skipping.")
-    next
-  end
   bios_options[sys_name][crowbar_config][token] = setting
 end
 reader.close

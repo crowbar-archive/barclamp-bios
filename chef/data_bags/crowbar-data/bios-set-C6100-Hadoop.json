@@ -1,9 +1,9 @@
 {
-  "id": "bios-set-C6100-Hadoop",
   "attributes": {
     "virtualization_tech": "disabled",
     "intel_QPI_bandwidth_priority": "io"
   },
+  "id": "bios-set-C6100-Hadoop",
   "versions": [
     "1.69"
   ],

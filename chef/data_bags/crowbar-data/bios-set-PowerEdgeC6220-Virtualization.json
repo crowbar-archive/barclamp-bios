@@ -1,10 +1,10 @@
 {
-  "id": "bios-set-PowerEdgeC6220-Virtualization",
   "attributes": {
-    "vt_for_direct_io": "enabled",
     "sriov_global_enable": "enabled",
+    "vt_for_direct_io": "enabled",
     "virtualization_technology": "enabled"
   },
+  "id": "bios-set-PowerEdgeC6220-Virtualization",
   "versions": [
     "1.0.28"
   ],

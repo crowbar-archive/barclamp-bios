@@ -1,15 +1,22 @@
 {
-  "id": "bios-set-PowerEdgeC6105-default",
   "attributes": {
-    "cs_sparing_enable": "disabled",
+    "restore_on_ac_power_loss": "power_on",
     "raw_tokens": [
       135,
       593,
       18446,
       18448
     ],
-    "quiet_boot": "disabled"
+    "wait_for_f1_if_error": "disabled",
+    "quiet_boot": "disabled",
+    "nic1_82576eb": "enabled_with_pxe",
+    "quick_boot": "enabled",
+    "nic2_82576eb": "enabled_with_pxe",
+    "acpi_srat_table": "enabled",
+    "force_pxe_first": "enabled",
+    "cs_sparing_enable": "disabled"
   },
+  "id": "bios-set-PowerEdgeC6105-default",
   "versions": [
     "2.1.4"
   ],

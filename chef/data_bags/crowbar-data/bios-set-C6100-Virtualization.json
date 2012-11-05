@@ -1,8 +1,8 @@
 {
-  "id": "bios-set-C6100-Virtualization",
   "attributes": {
     "SR_IOV_support": "enabled"
   },
+  "id": "bios-set-C6100-Virtualization",
   "versions": [
     "1.69"
   ],

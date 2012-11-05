@@ -1,14 +1,27 @@
 {
-  "id": "bios-set-PowerEdgeC2100-default",
   "attributes": {
-    "NUMA_support": "enabled",
+    "usb_2.0_controller": "enabled",
+    "nic1_kawela": "enabled_with_pxe",
+    "restore_on_ac_power_loss": "power_on",
     "raw_tokens": [
       593,
       18446,
       18448
     ],
-    "quiet_boot": "disabled"
+    "wait_for_f1_if_error": "disabled",
+    "virtualization_tech": "enabled",
+    "quiet_boot": "disabled",
+    "quick_boot": "enabled",
+    "NUMA_support": "enabled",
+    "onboard_vga_device": "enabled",
+    "active_processor_cores": "all",
+    "nic2_kawela": "enabled_with_pxe",
+    "force_pxe_first": "enabled",
+    "execute_disable_bit": "enabled",
+    "intel_QPI_bandwidth_priority": "compute",
+    "hyperthreading_tech": "enabled"
   },
+  "id": "bios-set-PowerEdgeC2100-default",
   "versions": [
     "C99Q3B22"
   ],

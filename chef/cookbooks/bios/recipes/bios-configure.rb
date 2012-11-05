@@ -40,16 +40,8 @@ else
   when "legacy","new_pec","unified_pec"
     # Run the statically linked version of setupbios on the ubuntu platform
     pgm_dir = "/opt/bios/setupbios"
+    ENV['SETUPBIOS_SETTINGS_PATH']=pgm_dir
     pgmname = "#{pgm_dir}/alternate_version/setupbios.static"
-    # if we don't have the BIOS utility, we can't setup anything...
-    ruby_block "check for setupbios" do
-      block do
-	unless File.exists?(pgmname)
-	  @@bios_setup_enable = false
-	  node["crowbar_wall"]["status"]["bios"] << "Could not find #{pgmname}: Disabling setup"
-	end
-      end
-    end
   end
 
   ## try to get the per-role set name.
@@ -101,27 +93,96 @@ else
       action   :configure
     end
   when "unified_pec"
+    raw_tokens = []
+    symbolic_tokens = {}
+    current_tokens = {}
+    need_reboot = false
+    symbolic_change_map = (node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map] rescue {})
+    raw_change_map = (node[:crowbar_wall][:dell_bios][:pec_raw_change_map] rescue {})
+    node[:crowbar_wall] ||= Mash.new
+    node[:crowbar_wall][:dell_bios] ||= Mash.new
+    raw_tokens = []
+    IO.popen("#{pgmname} list_tokens",'r') do |f|
+        raw_tokens = f.readlines
+      end
+    unless node[:crowbar_wall][:dell_bios][:initial_raw_tokens]
+      node[:crowbar_wall][:dell_bios][:initial_raw_tokens] = raw_tokens
+    else
+      node[:crowbar_wall][:dell_bios][:current_raw_tokens] ||= []
+      node[:crowbar_wall][:dell_bios][:current_raw_tokens] << raw_tokens
+    end
+    node.save
+
+    # Split out raw tokens from symbolic tokens for the values we want to set.
     values.each do |name,val|
       if name == "raw_tokens"
-        val.each do |tok|
-          tok = sprintf("%x",tok)
-          bash "set raw D4 token #{tok}" do
-            cwd pgm_dir
-            code "#{pgmname} set #{tok}"
-          end
-        end
+        raw_tokens = val.map{|tok| sprintf("%x",tok)}
       else
-        bash "set #{name} to #{val}" do
-          cwd pgm_dir
-          code "#{pgmname} setting set #{name} #{val}"
-        end
+        symbolic_tokens[name] = val
       end
+    end
+    # Get the current state of all the symbolic token settings.
+    IO.popen("#{pgmname} setting save",'r') do |f|
+      f.each do |raw_line|
+        line = raw_line.gsub(/[#;].*/,'').strip.chomp
+        next if line.empty?
+        name,val = line.split(':',2).map{|t|t.strip}
+        current_tokens[name] = val
+      end
+    end
+    # Compare the current state of the BIOS to the state we want.
+    # If any settings are not in the state we want, change them and
+    # flag that we want a reboot.
+    symbolic_tokens.each do |name,val|
+      next if current_tokens[name] && (current_tokens[name] == val)
+      if symbolic_change_map[name] && symbolic_change_map[name][:tries] > 5
+        raise(RangeError.new,"Tried #{symbolic_change_map[name][:tries]} to update #{name} from #{current_tokens[name]} to #{val}. Giving up.")
+      elsif symbolic_change_map[name]
+        symbolic_change_map[name][:tries] += 1
+      else
+        symbolic_change_map[name] = {
+          :current => current_tokens[name],
+          :desired => val,
+          :tries => 1
+        }
+      end
+      need_reboot = true
+      bash "BIOS: change #{name} from #{current_tokens[name]} to #{val}" do
+        code "#{pgmname} setting set #{name} #{val}"
+      end
+    end
+    # Test to see if all the raw tokens we want are set.
+    # If any are not set, set them and flag that we need a reboot.
+    raw_tokens.each do |tok|
+      next if %x{ "${pgmname}" test "#{tok}" }.strip.chomp == "set"
+      if raw_change_map[tok] && raw_change_map[tok] > 5
+        raise(RangeError.new,"Tried #{raw_change_map[tok]} tries to set #{tok}. Giving up.")
+      elsif raw_change_map[tok]
+        raw_change_map[tok] += 1
+      else
+        raw_change_map[tok] = 1
+      end
+      need_reboot = true
+      bash "BIOS: set raw D4 token #{tok}" do
+        code "#{pgmname} set #{tok}"
+      end
+    end
+    node[:crowbar_wall] ||= Mash.new
+    node[:crowbar_wall][:dell_bios] ||= Mash.new
+    node[:crowbar_wall][:dell_bios][:pec_symbolic_change_map] = symbolic_change_map
+    node[:crowbar_wall][:dell_bios][:pec_raw_change_map] = raw_change_map
+    node.save
+    if need_reboot
+      bash "Reboot to apply BIOS settings" do
+        code "reboot && sleep 120"
+      end
+    else
+      Chef::Log.info("BIOS: All bios settings as expected")
     end
   when "new_pec"
     values.each { | name, set_value|
       log("setting #{name} to #{set_value}")
       bash "bios-update-#{name}" do
-	cwd pgm_dir
 	code <<-EOH
 	   #{pgmname} setting set #{name} #{set_value}
 	 EOH
@@ -131,13 +192,11 @@ else
     bios_tokens "before changes" do
       action :dump
       pgm pgmname
-      pgm_dir pgm_dir
     end if debug
 
     values.each { | name, set_value|
       d4_token = set_value[0]
       bash "bios-update-#{name}-#{d4_token}-#{name}" do
-	cwd pgm_dir
 	code <<-EOH
 	   echo #{pgmname} set #{d4_token}
 	   #{pgmname} set #{d4_token}
@@ -148,7 +207,6 @@ else
     bios_tokens "after changes" do
       action :dump
       pgm pgmname
-      pgm_dir pgm_dir
     end if debug
   end
 end

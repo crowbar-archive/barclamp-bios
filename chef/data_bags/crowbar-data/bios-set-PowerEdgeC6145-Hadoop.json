@@ -1,10 +1,10 @@
 {
-  "id": "bios-set-PowerEdgeC6145-Hadoop",
   "attributes": {
-    "SR_IOV_support": "disabled",
+    "iommu": "disabled",
     "secure_virtual_machine_mode": "disabled",
-    "iommu": "disabled"
+    "SR_IOV_support": "disabled"
   },
+  "id": "bios-set-PowerEdgeC6145-Hadoop",
   "versions": [
     "2.8.0"
   ],

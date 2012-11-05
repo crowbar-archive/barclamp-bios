@@ -1,11 +1,20 @@
 {
-  "id": "bios-set-PowerEdgeC6145-default",
   "attributes": {
-    "force_pxe_first": "enabled",
-    "quick_boot": "disabled",
+    "video_enumeration": "onboard",
+    "nic2_option_rom": "enabled",
+    "restore_on_ac_power_loss": "power_on",
+    "wait_for_f1_if_error": "disabled",
     "quiet_boot": "disabled",
-    "restore_on_ac_power_loss": "power_on"
+    "ipmi_detection": "enabled",
+    "quick_boot": "disabled",
+    "onboard_vga_device": "enabled",
+    "acpi_srat_table": "enabled",
+    "nic1_option_rom": "enabled",
+    "force_pxe_first": "enabled",
+    "nic_function_support": "pxe",
+    "cs_sparing_enable": "disabled"
   },
+  "id": "bios-set-PowerEdgeC6145-default",
   "versions": [
     "2.8.0"
   ],
