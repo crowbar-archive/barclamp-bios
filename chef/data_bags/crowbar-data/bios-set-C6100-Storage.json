@@ -1,11 +1,11 @@
 {
-  "attributes": {
-    "virtualization_tech": "disabled",
-    "intel_QPI_bandwidth_priority": "io"
-  },
-  "id": "bios-set-C6100-Storage",
   "versions": [
     "1.69"
   ],
-  "style": "unified_pec"
+  "style": "unified_pec",
+  "id": "bios-set-C6100-Storage",
+  "attributes": {
+    "intel_QPI_bandwidth_priority": "io",
+    "virtualization_tech": "disabled"
+  }
 }

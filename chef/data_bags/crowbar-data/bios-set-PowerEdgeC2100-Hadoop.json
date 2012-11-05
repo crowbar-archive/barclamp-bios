@@ -1,11 +1,11 @@
 {
-  "attributes": {
-    "virtualization_tech": "disabled",
-    "intel_QPI_bandwidth_priority": "io"
-  },
-  "id": "bios-set-PowerEdgeC2100-Hadoop",
   "versions": [
     "C99Q3B22"
   ],
-  "style": "unified_pec"
+  "style": "unified_pec",
+  "id": "bios-set-PowerEdgeC2100-Hadoop",
+  "attributes": {
+    "intel_QPI_bandwidth_priority": "io",
+    "virtualization_tech": "disabled"
+  }
 }

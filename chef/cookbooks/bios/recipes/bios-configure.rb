@@ -106,7 +106,7 @@ else
     symbolic_tokens = {}
     values.each do |name,val|
       if name == "raw_tokens"
-        raw_tokens = val.map{|tok| sprintf("%x",tok)}
+        raw_tokens = val
       else
         symbolic_tokens[name] = val
       end

@@ -1,12 +1,12 @@
 {
-  "attributes": {
-    "sriov_global_enable": "disabled",
-    "vt_for_direct_io": "disabled",
-    "virtualization_technology": "disabled"
-  },
-  "id": "bios-set-PowerEdgeC6220-Hadoop",
   "versions": [
     "1.0.28"
   ],
-  "style": "unified_pec"
+  "style": "unified_pec",
+  "id": "bios-set-PowerEdgeC6220-Hadoop",
+  "attributes": {
+    "virtualization_technology": "disabled",
+    "vt_for_direct_io": "disabled",
+    "sriov_global_enable": "disabled"
+  }
 }

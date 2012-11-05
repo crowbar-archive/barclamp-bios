@@ -1,13 +1,13 @@
 {
-  "attributes": {
-    "embedded_sata_controller": "off",
-    "sriov_global_enable": "enabled",
-    "vt_for_direct_io": "enabled",
-    "virtualization_technology": "enabled"
-  },
-  "id": "bios-set-PowerEdgeC8220-Virtualization",
   "versions": [
     "1.0.24"
   ],
-  "style": "unified_pec"
+  "style": "unified_pec",
+  "id": "bios-set-PowerEdgeC8220-Virtualization",
+  "attributes": {
+    "virtualization_technology": "enabled",
+    "embedded_sata_controller": "off",
+    "vt_for_direct_io": "enabled",
+    "sriov_global_enable": "enabled"
+  }
 }

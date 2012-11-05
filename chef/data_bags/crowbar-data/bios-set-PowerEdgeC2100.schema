@@ -1,63 +1,65 @@
 {
-  "type": "map",
+  "required": true,
   "mapping": {
+    "versions": {
+      "sequence": [
+        {
+          "type": "str"
+        }
+      ],
+      "required": false,
+      "type": "seq"
+    },
+    "style": {
+      "required": true,
+      "type": "str",
+      "enum": [
+        "unified_pec"
+      ]
+    },
+    "id": {
+      "required": true,
+      "type": "str"
+    },
     "attributes": {
-      "type": "map",
+      "required": true,
       "mapping": {
-        "memory_frequency": {
-          "type": "str",
+        "max_CPUID_value_limit": {
           "required": false,
-          "enum": [
-            "auto",
-            "800mhz",
-            "1066mhz",
-            "1333mhz"
-          ]
-        },
-        "usb_2.0_controller": {
           "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "pci_e_connect_option_ROM": {
-          "type": "str",
+        "memory_mode": {
           "required": false,
+          "type": "str",
           "enum": [
-            "disabled",
-            "enabled"
+            "independent",
+            "channel_mirroring",
+            "lockstep"
           ]
         },
-        "terminal_type": {
-          "type": "str",
+        "intel_QPI_bandwidth_priority": {
           "required": false,
+          "type": "str",
           "enum": [
-            "ansi",
-            "vt_100",
-            "vt_utf8"
+            "compute",
+            "io"
           ]
         },
-        "intel_c_state_tech": {
-          "type": "str",
+        "throttling_closed_loop": {
           "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "throttling_open_loop": {
           "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
           ]
         },
         "nic1_kawela": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled_with_pxe",
@@ -65,251 +67,76 @@
             "iscsi_remote_boot"
           ]
         },
-        "intel_VT_d": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "max_CPUID_value_limit": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "c6_state": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "ME_support": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "force_pxe_boot_only": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "restore_on_ac_power_loss": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "power_off",
-            "power_on",
-            "last_state"
-          ]
-        },
-        "flow_control": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "none",
-            "hardware",
-            "software"
-          ]
-        },
-        "raw_tokens": {
-          "type": "seq",
-          "sequence": [
-            {
-              "type": "int"
-            }
-          ],
-          "required": false
-        },
-        "virtualization_tech": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "SR_IOV_supported": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "quiet_boot": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "wait_for_f1_if_error": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "lan_boot_priority": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "maximum_payload_size": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "auto",
-            "128_bytes",
-            "256_bytes"
-          ]
-        },
         "force_usb_first": {
-          "type": "str",
           "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "hyperthreading_tech": {
+          "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
         "c3_state": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "acpi_c2",
             "acpi_c3"
           ]
         },
-        "NUMA_support": {
-          "type": "str",
+        "c6_state": {
           "required": false,
-          "enum": [
-            "disabled",
-            "enabled",
-            "numa_for_sles11"
-          ]
-        },
-        "memory_mode": {
           "type": "str",
-          "required": false,
-          "enum": [
-            "independent",
-            "channel_mirroring",
-            "lockstep"
-          ]
-        },
-        "sata_configuration": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "compatible",
-            "enhanced"
-          ]
-        },
-        "quick_boot": {
-          "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "adjacent_cache_line_prefetch": {
-          "type": "str",
+        "memory_frequency": {
           "required": false,
+          "type": "str",
+          "enum": [
+            "auto",
+            "800mhz",
+            "1066mhz",
+            "1333mhz"
+          ]
+        },
+        "throttling_open_loop": {
+          "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "active_processor_cores": {
-          "type": "str",
+        "intel_VT_d": {
           "required": false,
-          "enum": [
-            "all",
-            "1",
-            "2"
-          ]
-        },
-        "onboard_vga_device": {
           "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "intel_speedstep_tech": {
-          "type": "str",
+        "force_pxe_boot_only": {
           "required": false,
-          "enum": [
-            "disabled",
-            "enabled_for_os",
-            "enabled_for_dapc"
-          ]
-        },
-        "intel_turbomode_tech": {
           "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "throttling_closed_loop": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "iscsi_remote_boot": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "pci_e_option_ROM": {
-          "type": "str",
-          "required": false,
-          "enum": [
-            "disabled",
-            "enabled"
-          ]
-        },
-        "crystal_beach_dma": {
-          "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
           ]
         },
         "serial_port_mode": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "115200_8n1",
             "57600_8n1",
@@ -318,17 +145,117 @@
             "9600_8n1"
           ]
         },
-        "memory_overclock": {
-          "type": "str",
+        "adjacent_cache_line_prefetch": {
           "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "SR_IOV_supported": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "quick_boot": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "raw_tokens": {
+          "sequence": [
+            {
+              "type": "str"
+            }
+          ],
+          "required": false,
+          "type": "seq"
+        },
+        "virtualization_tech": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "intel_turbomode_tech": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "pci_e_option_ROM": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "ME_support": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "terminal_type": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "ansi",
+            "vt_100",
+            "vt_utf8"
+          ]
+        },
+        "configure_sata_as": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "ide",
+            "raid",
+            "ahci"
+          ]
+        },
+        "lan_boot_priority": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "intel_speedstep_tech": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled_for_os",
+            "enabled_for_dapc"
+          ]
+        },
+        "intel_c_state_tech": {
+          "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
         "nic2_kawela": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled_with_pxe",
@@ -336,118 +263,191 @@
             "iscsi_remote_boot"
           ]
         },
-        "force_pxe_first": {
-          "type": "str",
+        "onboard_vga_device": {
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "hardware_prefetcher": {
-          "type": "str",
+        "flow_control": {
           "required": false,
+          "type": "str",
           "enum": [
-            "disabled",
-            "enabled"
+            "none",
+            "hardware",
+            "software"
           ]
         },
         "data_reuse_optimization": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "execute_disable_bit": {
-          "type": "str",
+        "active_processor_cores": {
           "required": false,
+          "type": "str",
+          "enum": [
+            "all",
+            "1",
+            "2"
+          ]
+        },
+        "NUMA_support": {
+          "required": false,
+          "type": "str",
           "enum": [
             "disabled",
-            "enabled"
+            "enabled",
+            "numa_for_sles11"
           ]
         },
         "memory_operating_voltage": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "1.35v",
             "1.5v"
           ]
         },
-        "configure_sata_as": {
-          "type": "str",
+        "usb_2.0_controller": {
           "required": false,
+          "type": "str",
           "enum": [
-            "ide",
-            "raid",
-            "ahci"
+            "disabled",
+            "enabled"
           ]
         },
         "redirection_after_BIOS_POST": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
         "L1_data_prefetcher": {
-          "type": "str",
           "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         },
-        "intel_QPI_bandwidth_priority": {
-          "type": "str",
+        "memory_overclock": {
           "required": false,
-          "enum": [
-            "compute",
-            "io"
-          ]
-        },
-        "hyperthreading_tech": {
           "type": "str",
-          "required": false,
           "enum": [
             "disabled",
             "enabled"
+          ]
+        },
+        "maximum_payload_size": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "auto",
+            "128_bytes",
+            "256_bytes"
+          ]
+        },
+        "pci_e_connect_option_ROM": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "hardware_prefetcher": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "execute_disable_bit": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "sata_configuration": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "compatible",
+            "enhanced"
           ]
         },
         "active_state_power_management": {
-          "type": "str",
           "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "quiet_boot": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "wait_for_f1_if_error": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "force_pxe_first": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "restore_on_ac_power_loss": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "power_off",
+            "power_on",
+            "last_state"
+          ]
+        },
+        "iscsi_remote_boot": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "disabled",
+            "enabled"
+          ]
+        },
+        "crystal_beach_dma": {
+          "required": false,
+          "type": "str",
           "enum": [
             "disabled",
             "enabled"
           ]
         }
       },
-      "required": true
-    },
-    "id": {
-      "type": "str",
-      "required": true
-    },
-    "versions": {
-      "type": "seq",
-      "sequence": [
-        {
-          "type": "str"
-        }
-      ],
-      "required": false
-    },
-    "style": {
-      "type": "str",
-      "required": true,
-      "enum": [
-        "unified_pec"
-      ]
+      "type": "map"
     }
   },
-  "required": true
+  "type": "map"
 }

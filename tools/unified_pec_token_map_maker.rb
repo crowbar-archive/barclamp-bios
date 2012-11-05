@@ -116,7 +116,7 @@ class UnifiedPECSchema
             "raw_tokens" => {
               "type" => "seq",
               "required" => false,
-              "sequence" => [ { "type" => "int" } ] },
+              "sequence" => [ { "type" => "str" } ] },
           }
         }
       }
@@ -173,6 +173,7 @@ system("tar -x -C '#{tmpdir}' -f '#{setupbios}' #{bios_maps.values.sort.map{|f|"
 # Parse each bios mapping file from setupbios, saving
 # all the information we will need to valdate pec-bios-options and create a schema map.
 bios_schemas = {}
+bios_options = {}
 bios_maps.each do |sys_name,bios_map|
   unless File.exists?("#{tmpdir}/setupbios/#{bios_map}")
     STDERR.puts("Cannot find needed map file #{tmpdir}/setupbios/#{bios_map}")
@@ -195,6 +196,9 @@ bios_maps.each do |sys_name,bios_map|
         next
       end
       bios_schemas[sys_name].set_default(setting_name,default)
+      bios_options[sys_name] ||= {}
+      bios_options[sys_name]["default"] ||= {}
+      bios_options[sys_name]["default"][setting_name] = default
     end
   end
 end
@@ -207,7 +211,6 @@ unless File.exists?("#{ENV['BC_DIR']}/tools/maps/pec-bios-options.csv")
 end
 
 # Grab the bios options we want out of pec-bios-options.csv
-bios_options = {}
 STDERR.puts("Processing #{ENV['BC_DIR']}/tools/maps/pec-bios-options.csv:")
 reader = CSV.open("#{ENV['BC_DIR']}/tools/maps/pec-bios-options.csv",'r')
 reader.shift
@@ -225,7 +228,7 @@ reader.each do |row|
   if token =~ /^0x[0-9a-fA-F]+$/
     STDERR.puts("Line #{line}: Using raw token values depreciated.")
     bios_options[sys_name][crowbar_config]["raw_tokens"] ||= []
-    bios_options[sys_name][crowbar_config]["raw_tokens"] << token.to_i(0)
+    bios_options[sys_name][crowbar_config]["raw_tokens"] << token
     next
   end
   unless bios_schemas[sys_name].attribute_exists?(token)
