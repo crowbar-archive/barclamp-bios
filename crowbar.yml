@@ -43,22 +43,22 @@ supported_platforms:
 
 extra_files:
   # These files must be kept in sync with the ones in bc-template-dell_bios.json
-  # PEC 2100 BIOS and BMC
+  # PEC 2100 BIOS C99Q3B22 and BMC 1.82
   - http://downloads-us.dell.com/bios/PECC2100_BIOS_LX_R312645.BIN dell_bios/2100
   - http://downloads-us.dell.com/FOLDER00699088M/1/C2100_ESM_Firmware_HJR3N_LN32_1.82_A01.BIN dell_bios/2100
-  # PEC 6100 BIOS and BMC
+  # PEC 6100 BIOS 1.69 and BMC 1.29
   - http://downloads-us.dell.com/FOLDER00709304M/1/BIOS_WDKXK_LN32_1.69_A01.BIN dell_bios/6100
   - http://downloads-us.dell.com/FOLDER00718482M/1/ESM_Firmware_4WCD9_LN32_1.29_A01.BIN dell_bios/6100
-  # PEC 6105 BIOS and BMC
+  # PEC 6105 BIOS 2.1.4 and BMC 1.26
   - http://downloads-us.dell.com/FOLDER00711145M/1/C6105_BIOS_DV4P8_LN32_2.1.4_A00.BIN dell_bios/6105
   - http://downloads-us.dell.com/FOLDER00759656M/1/ESM_Firmware_FPM7N_LN32_1.26_A01.BIN dell_bios/6105
-  # PEC 6145 BIOS and BMC
+  # PEC 6145 BIOS 2.8.0 and BMC 1.10
   - http://downloads-us.dell.com/FOLDER00693128M/1/C6145_BIOS_FNC16_LN32_2.8.0_A01.BIN dell_bios/6145
   - http://downloads-us.dell.com/FOLDER00758520M/1/C6145_ESM_Firmware_KHJG3_LN32_1.10_A01.BIN dell_bios/6145
-  # PEC 6220 BIOS and BMC
+  # PEC 6220 BIOS 1.0.28 and BMC 1.24
   - http://downloads-us.dell.com/FOLDER00701464M/1/C6220_BIOS_134W8_LN32_1.0.28_A02.BIN dell_bios/6220
   - http://downloads-us.dell.com/FOLDER00857695M/1/C6220_ESM_Firmware_DCCV7_LN32_1.24.BIN dell_bios/6220
-  # PEC 8000 BIOS and BMC
+  # PEC 8000 BIOS 1.0.24 and BMC 1.23
   - http://downloads-us.dell.com/FOLDER00814705M/1/C8000_BIOS_M23F8_LN32_1.0.24_A00.BIN dell_bios/8000
   - http://downloads-us.dell.com/FOLDER00572501M/1/C8000_ESM_Firmware_P6JDN_LN32_1.23.BIN dell_bios/8000
   # Utility for configuring Dell-specific BMC settings on PEC gear.
