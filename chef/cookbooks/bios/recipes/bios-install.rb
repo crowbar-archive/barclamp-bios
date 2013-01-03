@@ -2,7 +2,8 @@
 
 include_recipe "bios::bios-common"
 
-return unless @@provisioner_server
+provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
+return unless provisioner_server
 
 include_recipe "bios::bios-tools"
 
@@ -18,7 +19,7 @@ product.strip!
     end
   end
   remote_file "/tmp/#{f}" do
-    source "#{@@provisioner_server}/files/dell_bios/#{f}"
+    source "#{provisioner_server}/files/dell_bios/#{f}"
     mode '0755'
     action :create_if_missing
   end

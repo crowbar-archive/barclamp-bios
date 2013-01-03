@@ -112,6 +112,8 @@ end
 def wsman_update(product)
   require 'wsman'
   # Get bmc parameters
+  provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
+  return false unless provisioner_server
   ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "bmc").address
   user = node["ipmi"]["bmc_user"] rescue "crowbar"
   password = node["ipmi"]["bmc_password"] rescue "crowbar"
@@ -119,7 +121,7 @@ def wsman_update(product)
            :host => ip, :port => 443, 
            :debug_time => false }
 
-  system("wget -q #{@@provisioner_server}/files/wsman/supported.json -O /tmp/supported.json")
+  system("wget -q #{provisioner_server}/files/wsman/supported.json -O /tmp/supported.json")
   jsondata = ::File.read('/tmp/supported.json')
   data = JSON.parse(jsondata)
   unless data
@@ -212,7 +214,7 @@ def wsman_update(product)
     file = d[1]
 
     Chef::Log.info "Update: #{id} #{file}"
-    answer, jid = wsman_update.update(id, "#{@@provisioner_server}/files/#{file}")
+    answer, jid = wsman_update.update(id, "#{provisioner_server}/files/#{file}")
     if answer
       Chef::Log.info "WSMAN scheduled: #{id} with #{file}"
       reboot = true if jid # Reboot if we need to.
