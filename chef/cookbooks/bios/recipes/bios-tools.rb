@@ -8,6 +8,8 @@
 
 include_recipe "bios::bios-common"
 
+provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
+return unless provisioner_server
 bmc="bmc-2012-10-17.tgz"
 setupbios="setupbios-2012-10-10.tgz"
 socflash="socflash_v10601.zip"
@@ -24,7 +26,7 @@ socflash="socflash_v10601.zip"
 # These are tools that we rely on to configure PEC gear.
 [bmc,setupbios,socflash].each do |f|
   a = remote_file "/tmp/#{f}" do
-    source "#{@@provisioner_server}/files/dell_bios/tools/#{f}"
+    source "#{provisioner_server}/files/dell_bios/tools/#{f}"
     action :nothing
   end
   a.run_action(:create_if_missing)
