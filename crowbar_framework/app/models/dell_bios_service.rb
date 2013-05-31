@@ -14,11 +14,22 @@
 #
 
 class DellBiosService < ServiceObject
-  
+
+  def initialize(thelogger)
+    @bc_name = "dell_bios"
+    @logger = thelogger
+  end
+
+  def create_proposal
+    @logger.debug("DellBios create_proposal: entering")
+    base = super
+    @logger.debug("DellBios create_proposal: exiting")
+    base
+  end
+
   def transition(inst, name, state)
     a = [200, ""]
     @logger.debug("DellBios transition: enter #{name} for #{state}")
-    
     #
     # If we are discovering the node, make sure that we add the bios role to the node
     #
@@ -28,9 +39,7 @@ class DellBiosService < ServiceObject
       @logger.debug("DellBios transition: leaving from installed state for #{name} for #{state}")
       a = result ? [200, ""] : [400, "Failed to add role"] # GREG: TRANSLATE
     end
-    
     @logger.debug("DellBios transition: leaving for #{name} for #{state}")
     a
   end
-  
 end
