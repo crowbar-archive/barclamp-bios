@@ -28,6 +28,19 @@ crowbar:
   chef_order: 17
   run_order: 17
 
+locale_additions:
+  en:
+    barclamp:
+      bios:
+        edit_deployment: 
+          deployment: Deployment
+        edit_attributes:
+          attributes: Attributes
+          bios_setup_enable: Enable BIOS Setup
+          bios_update_enable: Enable BIOS Update
+          bmc_update_enable: Enable BMC firmware Update
+          debug: Enable Barclamp Debug   
+
 build_cmd: build.sh
 
 gems:
