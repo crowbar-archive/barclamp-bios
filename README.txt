@@ -1,6 +1,6 @@
 Welcome to a Barclamp for the Crowbar Framework project
 =======================================================
-_Copyright 2011, Dell, Inc._
+_Copyright 2013, Dell, Inc._
 
 The code and documentation is distributed under the Apache 2 license (http://www.apache.org/licenses/LICENSE-2.0.html). Contributions back to the source are encouraged.
 
