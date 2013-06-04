@@ -1,5 +1,17 @@
-# Copyright 2011, Dell
-
+# Copyright (c) 2013 Dell Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 require 'json'
 require 'chef/shell_out'
@@ -47,12 +59,22 @@ end
 def wsman_configure(product, attrs)
   require 'wsman'
   # Get bmc parameters
-  ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "bmc").address
+  ip = node["crowbar_wall"]["ipmi"]["address"]
   user = node["ipmi"]["bmc_user"] rescue "crowbar"
   password = node["ipmi"]["bmc_password"] rescue "crowbar"
 
   opts = { :user => user, :password => password, :host => ip, :port => 443, :debug_time => false }
   wsman = Crowbar::WSMAN.new(opts)
+
+  ## Seen issues on 11G where pending config jobs seem to be left behind...
+  ## if updates go through all jobs are cleared out...else clear_all_jobs isn't called prior
+  answer, status = wsman.clear_all_jobs
+  if (answer)
+    Chef::Log.info("Cleared all jobs...Sleeping for 1 mn")
+    sleep 60
+  else
+    Chef::Log.info("Unable to clear jobs...May not be able to set attributes")
+  end
 
   # Wait for RS ready
   local_count = 0
@@ -62,7 +84,7 @@ def wsman_configure(product, attrs)
     ready, value = wsman.is_RS_ready?
     break if ready
     Chef::Log.info("WSMAN not ready configure attributes: #{value}")
-    sleep 10
+    sleep 30
   end while local_count < 4
   if local_count == 4
     Chef::Log.info("WSMAN not ready configure attributes, return fail")
@@ -75,8 +97,8 @@ def wsman_configure(product, attrs)
   ret, reboot = wsman_attributes.update_attributes(attrs, opts)
   Chef::Log.info("WSMAN update attributes: #{ret} #{reboot}")
   report_problem(reboot) unless ret
+  node.save # Just in case the update attributes changed something
   %x{reboot && sleep 120} if ret and reboot
-
   return ret
 end
 
