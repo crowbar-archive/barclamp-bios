@@ -334,34 +334,48 @@ end
 # Now get the packages
 data = {}
 components = callback.components
-bundles.each do |p,b|
-  b.contents.each do |pkg, v| 
-    c = components[pkg]
-    next unless c.wanted
+try_again = true
+count = 0
+while try_again do
+  try_again = false
+  count = count + 1
+  bundles.each do |p,b|
+    b.contents.each do |pkg, v| 
+      c = components[pkg]
+      next unless c.wanted
 
-    file = "#{files_dir}/#{pkg}"
+      file = "#{files_dir}/#{pkg}"
 
-    data[p] = {} unless data[p]
-    data[p][c.package_id] = {} unless data[p][c.package_id]
-    data[p][c.package_id]["file"] = file.gsub(/.*files\//, "")
-    data[p][c.package_id]["type"] = "wsman"
-    data[p][c.package_id]["component_type"] = c.component_type
-    data[p][c.package_id]["devices"] = c.devices.values
-    data[p][c.package_id]["version"] = c.vendor_version
+      data[p] = {} unless data[p]
+      data[p][c.package_id] = {} unless data[p][c.package_id]
+      data[p][c.package_id]["file"] = file.gsub(/.*files\//, "")
+      data[p][c.package_id]["type"] = "wsman"
+      data[p][c.package_id]["component_type"] = c.component_type
+      data[p][c.package_id]["devices"] = c.devices.values
+      data[p][c.package_id]["version"] = c.vendor_version
 
-    get_it = true
-    if File.exists?(file)
-      sum = %x{md5sum '#{file}'}.split(" ")[0].downcase
-      get_it = sum != c.md5sum
-    end
+      get_it = true
+      if File.exists?(file)
+        sum = %x{md5sum '#{file}'}.split(" ")[0].downcase
+        get_it = sum != c.md5sum
+      end
 
-    if get_it
-      system "curl -s -L '#{c.url}' > '#{file}'"
-      sum = %x{md5sum '#{file}'}.split(" ")[0].downcase
-      if sum != c.md5sum
-        puts "Failed to download #{pkg}"
+      if get_it
+        puts "Getting #{file}"
+        system "curl -s -L '#{c.url}' > '#{file}'"
+        sum = %x{md5sum '#{file}'}.split(" ")[0].downcase
+        if sum != c.md5sum
+          puts "Failed to download #{pkg}"
+          puts "Removing and trying again"
+          %x{rm -f '#{file}'}
+          try_again = true
+        end
       end
     end
+  end
+  if count > 3 and try_again
+    try_again = false
+    puts "Tried 3 times to get all the packages without corruption.  Stopping"
   end
 end
 
