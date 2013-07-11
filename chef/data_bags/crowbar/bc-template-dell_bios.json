@@ -11,23 +11,27 @@
           "updaters": {
               "PowerEdge C2100" : {  
                  "bmc" :  "2100/C2100_ESM_Firmware_HJR3N_LN32_1.82_A01.BIN",
-                 "bios" : "2100/PECC2100_BIOS_LX_R312645.BIN"
+                 "bios" : "2100/C2100_BIOS_5PY2C_LN32_B23.BIN"
               },
               "C6100" : { 
-                 "bmc":  "6100/ESM_Firmware_4WCD9_LN32_1.29_A01.BIN",
-                 "bios": "6100/BIOS_WDKXK_LN32_1.69_A01.BIN"
+                 "bmc":  "6100/ESM_Firmware_47XCH_LN32_1.32.BIN",
+                 "bios": "6100/BIOS_P8GRR_LN32_1.70.BIN"
               },
               "PowerEdge C6105" : {
-                 "bmc":  "6105/ESM_Firmware_FPM7N_LN32_1.26_A01.BIN",
-                 "bios": "6105/C6105_BIOS_DV4P8_LN32_2.1.4_A00.BIN"
+                 "bmc":  "6105/ESM_Firmware_WVV5T_LN32_1.30.BIN",
+                 "bios": "6105/BIOS_KDT7G_LN32_2.2.1.BIN"
+              },
+              "PowerEdge C6145" : {
+                 "bmc":  "6145/C6145_ESM_Firmware_T3PPM_LN32_1.13.BIN",
+                 "bios": "6145/C6145_BIOS_F3CYY_LN32_3.0.0_A01.BIN"
               },
               "PowerEdge C6220" : {
-                 "bios":  "6220/C6220_BIOS_134W8_LN32_1.0.28_A02.BIN",
-                 "bmc":   "6220/C6220_ESM_Firmware_DCCV7_LN32_1.24.BIN"
+                 "bios":  "6220/C6220_BIOS_NXJXX_LN32_1.1.19.BIN",
+                 "bmc":   "6220/C6220_ESM_Firmware_9JJW3_LN32_2.02.BIN"
               },
               "PowerEdge C8000": {
-                 "bios": "8000/C8000_BIOS_M23F8_LN32_1.0.24_A00.BIN",
-                 "bmc":  "8000/C8000_ESM_Firmware_P6JDN_LN32_1.23.BIN"
+                 "bios": "8000/BIOS_PM83C_LN32_1.1.19.BIN",
+                 "bmc":  "8000/C8000_ESM_Firmware_5P4TF_LN32_2.03.BIN"
               },
               "PowerEdge R610" : {
                  "wsman": "true"

@@ -1,4 +1,17 @@
-# Copyright 2011, Dell
+# Copyright (c) 2013 Dell Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 require 'json'
 require 'chef/shell_out'
@@ -10,7 +23,7 @@ def check_avail(update,product,type)
     ret = nil
   else
      # if we don't have the BIOS utility, we can't setup anything...
-    update = "/tmp/#{update}"
+    update = "/updates/#{update}"
     ret = update if ::File.exists?( update )
   end
   return ret
@@ -46,6 +59,14 @@ end
 
 def cnt_name(type)
   "bios_#{type}_attempts"
+end
+
+def log_action(action)
+  node["crowbar_wall"] = {} unless node["crowbar_wall"]
+  node["crowbar_wall"]["bios"] = {} unless node["crowbar_wall"]["bios"]
+  node["crowbar_wall"]["bios"]["actions"] = [] unless node["crowbar_wall"]["bios"]["actions"]
+  node["crowbar_wall"]["bios"]["actions"] << action
+  node.save
 end
 
 def get_count(type)
@@ -86,6 +107,16 @@ def do_update(type,cmd)
   cmd = Chef::ShellOut.new("#{cmd} -q ", :timeout =>900)
   cmd.run_command
   Chef::Log.info("results: exit #{cmd.exitstatus}, output: #{cmd.stdout}")
+  begin
+    if (type == "bmc" and cmd.exitstatus == 0)
+      node["crowbar_wall"]["status"]["ipmi"]["user_set"] = false
+      node["crowbar_wall"]["status"]["ipmi"]["address_set"] = false
+      node.save
+      Chef::Log.info("Reset CB wall params after update of bmc")
+    end
+  rescue Exception => e
+    Chef::Log.info("Caught exception trying to write to cb wall")
+  end
   case cmd.exitstatus
   when 0,2
     begin
@@ -110,18 +141,31 @@ end
 # Returns false if we need to try again or on failure.
 #
 def wsman_update(product)
+  # Get the provisioner IP.
   require 'wsman'
+  provisioners = search(:node, "roles:provisioner-server")
+  provisioner = provisioners[0] if provisioners
+  web_port = provisioner["provisioner"]["web_port"]
+  begin
+    address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(provisioner, "bmc_vlan").address
+    if (!address)
+      address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(provisioner, "admin").address
+    end
+  rescue
+    address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(provisioner, "admin").address
+  end
+  Chef::Log.info("Provisioner IP address is #{address}")
+
   # Get bmc parameters
-  provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
-  return false unless provisioner_server
-  ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "bmc").address
+  ip = node["crowbar_wall"]["ipmi"]["address"]
   user = node["ipmi"]["bmc_user"] rescue "crowbar"
   password = node["ipmi"]["bmc_password"] rescue "crowbar"
-  opts = { :user => user, :password => password, 
+  opts = { :prov_ip => address, :prov_port => web_port,
+           :user => user, :password => password, 
            :host => ip, :port => 443, 
            :debug_time => false }
 
-  system("wget -q #{provisioner_server}/files/wsman/supported.json -O /tmp/supported.json")
+  system("wget -q http://#{opts[:prov_ip]}:#{opts[:prov_port]}/files/wsman/supported.json -O /tmp/supported.json")
   jsondata = ::File.read('/tmp/supported.json')
   data = JSON.parse(jsondata)
   unless data
@@ -139,12 +183,12 @@ def wsman_update(product)
   wsman_update = Crowbar::BIOS::WSMANUpdate.new(wsman)
 
   list = wsman_update.software_inventory
-  list2 = wsman_update.find_software_inventory_items(list, {"Status" => "Installed"})
+  list2 = wsman_update.find_software_inventory_items(list, {"Status" => "Installed", "Updateable" => "true"})
 
   updates = {}
   list2.each do |c|
     if k = wsman_update.match(pieces, c)
-      if c["VersionString"] == k["version"]
+      if c["VersionString"] >= k["version"]
         Chef::Log.info "Already at correct version: #{c["ElementName"]}"
         next
       end
@@ -173,19 +217,24 @@ def wsman_update(product)
     local_count = local_count + 1
 
     ready, value = wsman.is_RS_ready?
-    break if ready
+    if (ready)
+      break
+    end
     Chef::Log.info("WSMAN not ready before clear jobs: #{value}")
-    sleep 10
+    sleep 30
   end while local_count < 4
   return false, "Failed to get Ready from LC" if local_count == 4
 
   # If we have jobs, clear the updates.
   if updates.size > 0
+    puts "Clearing all jobs in job queue"
     answer, status = wsman.clear_all_jobs
     if !answer
       Chef::Log.error "WSMAN clear updates failed: #{status}"
       return false, status
     end
+    puts "Successfully cleared out jobs..Sleep 60s and poll for DM restart"
+    sleep 60
   end
 
   # Sort the updates.
@@ -198,11 +247,10 @@ def wsman_update(product)
     local_count = 0
     begin
       local_count = local_count + 1
-
       ready, value = wsman.is_RS_ready?
       break if ready
       Chef::Log.info("WSMAN not ready during update: #{value}")
-      sleep 10
+      sleep 30
     end while local_count < 4
     if local_count == 4
       Chef::Log.info("WSMAN not ready during update: return false")
@@ -214,7 +262,8 @@ def wsman_update(product)
     file = d[1]
 
     Chef::Log.info "Update: #{id} #{file}"
-    answer, jid = wsman_update.update(id, "#{provisioner_server}/files/#{file}")
+    log_action("Updating: #{id} #{file}")
+    answer, jid = wsman_update.update(id, "http://#{opts[:prov_ip]}:#{opts[:prov_port]}/files/#{file}")
     if answer
       Chef::Log.info "WSMAN scheduled: #{id} with #{file}"
       reboot = true if jid # Reboot if we need to.
@@ -256,9 +305,12 @@ action :update do
   elsif type != "wsman"
     if update.nil? and wsman.nil? or update
       begin
+        break unless can_try_again(type,max_tries)
         cmd = check_avail(update,product,type)
-        break unless can_try_again(type,max_tries) && cmd && check_version(type,cmd)
+        break unless cmd
+        break unless check_version(type,cmd)
         up_count(type)
+        log_action("Updating: #{cmd}")
         do_update(type,cmd)
       end while false
     end

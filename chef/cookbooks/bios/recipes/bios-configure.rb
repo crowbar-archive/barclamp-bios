@@ -1,4 +1,17 @@
-# Copyright (c) 2011 Dell Inc.
+#!/usr/bin/ruby
+# Copyright (c) 2013 Dell Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
 
 include_recipe "bios::bios-common"
@@ -13,8 +26,6 @@ end
 
 debug = node[:bios][:debug]
 product = node[:dmi][:system][:product_name].gsub(/\s+/, '')
-## hack for senile 6220...
-product = "PowerEdgeC6220" if product =~ /DCS/
 default_set = "bios-set-#{product}-default"
 bios_set = get_bag_item_safe(default_set, "bios defaults")
 bios_version = node[:dmi] && node[:dmi][:bios] && node[:dmi][:bios][:version]
@@ -84,6 +95,18 @@ else
 
   case  style
   when "wsman"
+    # If we have a asset_tag entry, try and set it in the bios.
+    if node["asset_tag"]
+      values["BIOS"] = {} unless values["BIOS"]
+      values["BIOS"]["default"] = {} unless values["BIOS"]["default"]
+      values["BIOS"]["default"]["AssetTag"] = {
+        "instance_id" => "BIOS.Setup.1-1:AssetTag",
+        "value" => node["asset_tag"],
+        "DefaultValue" => "",
+        "attr_name" => "AssetTag",
+        "GroupID" => nil
+      }
+    end
     bios_configure "wsman" do
       type           "wsman"
       product         node[:dmi][:system][:product_name]

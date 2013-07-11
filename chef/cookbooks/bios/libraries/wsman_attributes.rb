@@ -18,6 +18,9 @@ require "rubygems"
 require "xmlsimple"
 require "xml"
 require "json"
+require "wsman"
+
+CHANGE_BOOT_ORDER_CMD = "ChangeBootOrderByInstanceID"
 
 class Crowbar
   class BIOS
@@ -212,9 +215,7 @@ class WSMANAttributes
   end
 
   def attributes(section, debug=false)
-    output = @wsman.command("enumerate",
-                          "http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/#{section}",
-                          "-m 512 -V")
+    output = @wsman.command("enumerate", "#{WSMAN_URI_NS}/#{section}", "-m 512 -V")
     return false unless output
 
     puts "#{output}" if debug
@@ -264,20 +265,6 @@ class WSMANAttributes
     attrs
   end
 
-  def attribute_service(service)
-    res = "http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/#{service}"
-    output = @wsman.command("enumerate", res, "-m 256")
-    return false unless output
-
-    hash = {}
-    @wsman.measure_time "WSMAN parse AS #{service} values" do
-      hash = XmlSimple.xml_in(output, "ForceArray" => false)
-    end
-    t = hash["Body"]["EnumerateResponse"]["Items"][service]
-    [ res, t["CreationClassName"], t["SystemCreationClassName"], t["SystemName"], t["Name"] ]
-  end
-
-
   #
   # Set a set of attributes in a section of the system by name
   # Get the service access information
@@ -302,12 +289,23 @@ class WSMANAttributes
       class_name = "DCIM_RAIDService"
     end
 
-    res, ccn, sccn, sn, name = attribute_service(class_name)
+    svc_class_uri = @wsman.find_instance_uri(class_name)
+    res = "#{WSMAN_URI_NS}/#{class_name}"
 
     reboot = false
     method = "SetAttribute"
     method = "SetAttributes" if pairs.size > 1
     method = "ApplyAttributes" if class_name == "DCIM_iDRACCardService"
+
+    if (class_name != "DCIM_LCService")
+      output = @wsman.command("invoke -a DeletePendingConfiguration -k Target=#{fqdd}", svc_class_uri)
+      returnVal = @wsman.returnValue(output,"DeletePendingConfiguration")
+      if returnVal.to_i == RETURN_CFG_OK
+        puts "SET_ATTR:Successfully cleared pending configuration on #{fqdd}"
+      else
+        puts "SET_ATTR:Either no pending config or error deleting pending config on #{fqdd}"
+      end
+    end
 
     # Dump request file
     File.open("/tmp/request.xml", "w+") do |f|
@@ -323,10 +321,8 @@ class WSMANAttributes
     puts "Debug: set attribute request.xml"
     puts %x{cat /tmp/request.xml}
 
-    # Post the update request.
-    output = @wsman.command("invoke -a #{method}",
-                          "#{res}?CreationClassName=#{ccn},SystemCreationClassName=#{sccn},SystemName=#{sn},Name=#{name}",
-                          "-J /tmp/request.xml")
+    # Post the attribute update request.
+    output = @wsman.command("invoke -a #{method}",svc_class_uri, "-J /tmp/request.xml")
     puts "Debug: set attr failed no output" unless output 
     return [ false, "Failed to update attributes" ] unless output 
 
@@ -349,13 +345,87 @@ class WSMANAttributes
     end
 
     reboot = reboot || (t["RebootRequired"] == "Yes")
+ 
+    ## With new set_boot restructuring it's possible we could hit the   ##
+    ## BIOS barclamp and reboot into UEFI mode without hitting the set  ##
+    ## boot recipe...To prevent this we do a minimal reordering of UEFI ##
+    ## boot sources if the bios attributes set the pending mode to UEFI ##
+    ## The config job is created by the calling method..                ##
+    if (class_name == "DCIM_BIOSService")
+      current_mode = nil
+      pending_mode = nil
+      boot_sources = []
+      redo_sources = []
+      enable_srcs  = []
+      boot_mode    = "BIOS"
+      cmd          = "invoke -a ChangeBootOrderByInstanceID"
+      url          = nil
+      inputFile    = nil
+      boot_cfg_uri =  "#{WSMAN_URI_NS}/DCIM_BootConfigSetting?InstanceID="
+
+      begin
+        current_mode, pending_mode = @wsman.get_current_and_pending_bootmode()
+        puts "DBG: Curr boot mode = #{current_mode}. Pending boot mode = #{pending_mode}"
+        if (pending_mode and !pending_mode.is_a?(Hash))
+          if (pending_mode == "Uefi")
+            boot_sources = @wsman.get_uefi_boot_source_settings()
+            boot_mode    = "UEFI"
+            url       = "#{boot_cfg_uri}UEFI"
+            inputFile = "/tmp/#{CHANGE_BOOT_ORDER_CMD}_UEFI.xml"
+          else
+            boot_sources = @wsman.get_bios_boot_source_settings()
+            url       = "#{boot_cfg_uri}IPL"
+            inputFile = "/tmp/#{CHANGE_BOOT_ORDER_CMD}_IPL.xml"
+          end
+          if (boot_sources and boot_sources.length > 0)
+            redo_sources, enable_srcs = @wsman.set_boot_sources(boot_mode, boot_sources, true)
+
+            ## Check if we need to enable any NICs as boot sources...
+            if (enable_srcs and enable_srcs.length > 0)
+              puts "DBG: Need to enable the following boot srcs #{enable_srcs.inspect}"
+              return_val = @wsman.enable_boot_sources(enable_srcs)
+              if (return_val == RETURN_VAL_OK)
+                puts "DBG: Setting reboot flag to true...enabled boot source NICs"
+                reboot = true
+              end
+            else
+              puts "DBG: No boot sources need to be enabled..."
+            end
+
+            ## Check if we really need to rearrange boot sources
+            if (redo_sources and redo_sources.length > 0 and !redo_sources.eql?(boot_sources))
+              @wsman.writeBootSourceFile(inputFile, redo_sources)
+              xml = @wsman.command(cmd,url , "-J #{inputFile}")
+              if (xml)
+                return_val   = @wsman.returnValue(xml,CHANGE_BOOT_ORDER_CMD)
+                if (return_val == RETURN_VAL_OK)
+                  puts "DBG: Setting reboot flag to true...changed boot order for pending mode"
+                  reboot = true
+                else
+                  puts "DBG: Failed to set boot order...#{xml}"
+                end
+              else
+                puts "No data returned from ChangeBootOrderByInstanceID command..Exiting"
+              end
+            else
+              puts "Reordered sources is nil or matches original boot sources"
+            end
+          else
+            puts "No boot sources enumerated on system..Exiting"
+          end
+        else
+          puts "No pending boot mode...no changes to curr boot mode..Exiting"
+        end
+      rescue Exception => e
+        puts "DBG:Caught exception in setting boot order...#{e.message}"
+      end
+    end
+    ## End boot manipulation hack
 
     if class_name == "DCIM_LCService"
       # Post Targeted Config Job
       method = "CreateConfigJob"
-      output = @wsman.command("invoke -a #{method}",
-                          "#{res}?CreationClassName=#{ccn},SystemCreationClassName=#{sccn},SystemName=#{sn},Name=#{name}",
-                          "")
+      output = @wsman.command("invoke -a #{method}",svc_class_uri,"")
       puts "Debug: set attr LC job failed no output" unless output 
       return [ false, "Failed to create LC update job" ] unless output 
 
@@ -373,9 +443,7 @@ class WSMANAttributes
     else
       # Post Targeted Config Job
       method = "CreateTargetedConfigJob"
-      output = @wsman.command("invoke -a #{method}",
-                          "#{res}?CreationClassName=#{ccn},SystemCreationClassName=#{sccn},SystemName=#{sn},Name=#{name}",
-                          "-k Target=#{fqdd} -k ScheduledStartTime=\"TIME_NOW\"")
+      output = @wsman.command("invoke -a #{method}", svc_class_uri,"-k Target=#{fqdd} -k ScheduledStartTime=\"TIME_NOW\"")
       puts "Debug: set attr job failed no output" unless output 
       return [ false, "Failed to create update job" ] unless output 
 
@@ -387,9 +455,11 @@ class WSMANAttributes
       if t["ReturnValue"].to_i != 4096
         puts "Set Attr: return failed config job: #{(t.nil? ? "Unknown" : t["Message"])}" 
         return [ false, t["Message"] ]
+      else
+        job_id = @wsman.get_job_id(t["Job"])
+        puts "Targeted config job ID is #{job_id}"
       end
     end
-
     return [ true, reboot ]
   end
 
@@ -429,6 +499,13 @@ class WSMANAttributes
     # Return value if it exists.
     return nil unless group_part[attr_name]
     group_part[attr_name]["value"]
+  end
+
+  def log_action(action, node)
+    node["crowbar_wall"] = {} unless node["crowbar_wall"]
+    node["crowbar_wall"]["bios"] = {} unless node["crowbar_wall"]["bios"]
+    node["crowbar_wall"]["bios"]["actions"] = [] unless node["crowbar_wall"]["bios"]["actions"]
+    node["crowbar_wall"]["bios"]["actions"] << action
   end
 
   #
@@ -475,6 +552,7 @@ class WSMANAttributes
         content_hash[fqdd] = {} unless content_hash[fqdd]
         content_hash[fqdd][attr_name] = new_val
         puts "Setting #{attr_name} to #{new_val} from #{item.current_value} in #{fqdd}"
+        log_action("Setting #{attr_name} to #{new_val} from #{item.current_value} in #{fqdd}", node)
       end
     end
 
@@ -485,6 +563,11 @@ class WSMANAttributes
         reboot = (reboot || reb) if res
         error = (error || !res)
       end
+
+      # If we didn't error and didn't reboot, we need to
+      # record the attributes again.  We may not comeback here.
+      # If we are rebooting, then we are fine.
+      record_attributes(node) if !error and !reboot
     end
     [!error, reboot]
   end
@@ -497,7 +580,7 @@ end # Crowbar
 #######################################################
 
 def test_build_config_json(opts)
-  wsman = Crowbar::BIOS::WSMAN.new(opts)
+  wsman = Crowbar::WSMAN.new(opts)
   wsman_attributes = Crowbar::BIOS::WSMANAttributes.new(wsman)
   attrs = []
   h = wsman_attributes.attributes("DCIM_BIOSEnumeration")
@@ -551,7 +634,7 @@ def test_build_config_json(opts)
 end
 
 def test_set_attributes(attrs, opts)
-  wsman = Crowbar::BIOS::WSMAN.new(opts)
+  wsman = Crowbar::WSMAN.new(opts)
   wsman_attributes = Crowbar::BIOS::WSMANAttributes.new(wsman)
 
   node = {}
