@@ -24,7 +24,7 @@
           "DefaultValue": "",
           "attr_name": "ProcVirtualization",
           "GroupID": null
-        },,
+        },
         "BootMode": {
           "GroupID": "BootSettings",
           "value": "Uefi",
