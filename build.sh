@@ -30,7 +30,7 @@ bc_build() {
     mkdir -p "$BC_CACHE/files/wsman"
 
     cd "$BC_CACHE/files/wsman"
-    curl -s ftp://ftp.us.dell.com/catalog/Catalog.cab > Catalog.cab
+    curl -s http://ftp.us.dell.com/catalog/Catalog.cab > Catalog.cab
     cabextract Catalog.cab
     rm -rf Catalog.cab
     [[ ! -f Catalog.xml ]] && die "Can't find Catalog.xml"
