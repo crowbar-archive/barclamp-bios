@@ -37,7 +37,7 @@ fi
 
 if [[ $1 = ubuntu-12.04 ]]; then
     rmmod ipmi_si
+    rmmod ipmi_msghandler
 fi
 rmmod ipmi_devintf
-rmmod ipmi_msghandler
 
