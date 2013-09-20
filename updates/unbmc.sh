@@ -35,9 +35,10 @@ if [ $? -ne 0 ]; then
     /updates/socflash_x64 option=r of=/dev/null
 fi 
 
+rmmod ipmi_devintf
+
 if [[ $1 = ubuntu-12.04 ]]; then
     rmmod ipmi_si
     rmmod ipmi_msghandler
 fi
-rmmod ipmi_devintf
 
