@@ -33,7 +33,7 @@ timed() {
     )
 }
 
-grep -i "vmware virtual platform\|virtualbox" /sys/class/dmi/id/product_name
+grep -i "vmware virtual platform\|virtualbox\|bochs" /sys/class/dmi/id/product_name
 if [ $? -eq 0 ]; then
     echo "Not flashing BMC ... unsupported platform (virtual)"
     return 0
