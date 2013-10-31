@@ -24,7 +24,7 @@ rescue
   nil
 end
 
-debug = node[:bios][:debug]
+debug = node[:dell_bios][:debug]
 product = node[:dmi][:system][:product_name].gsub(/\s+/, '')
 default_set = "bios-set-#{product}-default"
 bios_set = get_bag_item_safe(default_set, "bios defaults")

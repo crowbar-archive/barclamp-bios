@@ -13,10 +13,10 @@
 # limitations under the License.
 #
 
-default[:bios][:config] = {}
-default[:bios][:config][:environment] = "bios-config-default"
-default[:bios][:debug] = false
-default[:bios][:bios_setup_enable] = true 
-default[:bios][:bios_update_enable] = true 
+default[:dell_bios][:config] = {}
+default[:dell_bios][:config][:environment] = "bios-config-default"
+default[:dell_bios][:debug] = false
+default[:dell_bios][:bios_setup_enable] = true 
+default[:dell_bios][:bios_update_enable] = true 
 
 default[:crowbar][:hardware][:bios_set]= "Storage"
