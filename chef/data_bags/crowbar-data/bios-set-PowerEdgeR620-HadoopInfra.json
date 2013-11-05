@@ -1,7 +1,7 @@
 {
-  "id": "bios-set-PowerEdgeR620-Storage",
+  "id": "bios-set-PowerEdgeR620-HadoopInfra",
   "style": "wsman",
-  "attributes": { 
+  "attributes": {
     "BIOS": {
       "default": {
         "ProcVirtualization": {
@@ -14,4 +14,5 @@
       }
     }
   }
-}    
+}
+

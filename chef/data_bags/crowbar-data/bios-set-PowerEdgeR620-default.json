@@ -1210,7 +1210,7 @@
         "AttachMode": {
           "attr_name": "AttachMode",
           "GroupID": "RFS.1",
-          "value": "Attach",
+          "value": "Auto Attach",
           "instance_id": "iDRAC.Embedded.1#RFS.1#AttachMode",
           "DefaultValue": "Auto Attach"
         },
