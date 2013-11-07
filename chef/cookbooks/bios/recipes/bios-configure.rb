@@ -31,7 +31,7 @@ bios_set = get_bag_item_safe(default_set, "bios defaults")
 bios_version = node[:dmi] && node[:dmi][:bios] && node[:dmi][:bios][:version]
 style = bios_set && bios_set[:style] || "legacy"
 style = "legacy" if style.length == 0
-node[:bios][:style] = style
+node[:dell_bios][:style] = style
 Chef::Log.info("Bios set style is: #{style}")
 
 if !@@bios_setup_enable
@@ -110,7 +110,7 @@ else
     bios_configure "wsman" do
       type           "wsman"
       product         node[:dmi][:system][:product_name]
-      max_tries       node[:bios][:max_tries]
+      max_tries       node[:dell_bios][:max_tries]
       values          values
       problem_file "/var/log/chef/hw-problem.log"
       action   :configure

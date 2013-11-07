@@ -22,7 +22,7 @@ node["crowbar_wall"] = {} if node["crowbar_wall"].nil?
 node["crowbar_wall"]["status"] = {} if node["crowbar_wall"]["status"].nil?
 node["crowbar_wall"]["status"]["bios"] = []
 
-@@debug = node[:bios][:debug]
+@@debug = node[:dell_bios][:debug]
 
 centos = ubuntu = false
 platform = node[:platform]
@@ -37,9 +37,9 @@ log("BIOS: running on OS:[#{platform}] on #{node[:dmi][:system][:product_name]} 
 
 
 ## enforce platfrom limitations
-@@bios_setup_enable = node[:bios][:bios_setup_enable] & centos & !@@is_admin
-@@bios_update_enable = node[:bios][:bios_update_enable] & centos & !@@is_admin
-@@bmc_update_enable = node[:bios][:bmc_update_enable] & centos & !@@is_admin
+@@bios_setup_enable = node[:dell_bios][:bios_setup_enable] & centos & !@@is_admin
+@@bios_update_enable = node[:dell_bios][:bios_update_enable] & centos & !@@is_admin
+@@bmc_update_enable = node[:dell_bios][:bmc_update_enable] & centos & !@@is_admin
 
 
 node["crowbar_wall"]["status"]["bios"] << "Bios Barclamp using centos:#{centos} ubuntu:#{ubuntu}"

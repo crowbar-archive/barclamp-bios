@@ -3,7 +3,7 @@
     "id": { "type": "str", "required": true, "pattern": "/^bc-dell_bios-|^bc-template-dell_bios$/" },
     "description": { "type": "str", "required": true },
     "attributes": { "type": "map", "required": true, "mapping": {
-        "bios": { "type": "map", "required": true, "mapping": {
+        "dell_bios": { "type": "map", "required": true, "mapping": {
             "bios_setup_enable" : { "type": "bool", "required": true},
 	    "bios_update_enable" : { "type": "bool", "required": true},
 	    "bmc_update_enable" : { "type": "bool", "required": true},
