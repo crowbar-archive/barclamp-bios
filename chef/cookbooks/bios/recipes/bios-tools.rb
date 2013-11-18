@@ -37,7 +37,7 @@ socflash="socflash_v10601.zip"
 # These are tools that we rely on to configure PEC gear.
 [bmc,setupbios,socflash].each do |f|
   a = remote_file "/tmp/#{f}" do
-    source "#{provisioner_server}/files/dell_bios/tools/#{f}"
+    source "http://#{provisioner_server}/files/dell_bios/tools/#{f}"
     action :nothing
   end
   a.run_action(:create_if_missing)

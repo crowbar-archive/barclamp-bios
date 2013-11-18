@@ -16,6 +16,16 @@
 include_recipe "bios::bios-common"
 
 provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
+if (provisioner_server == nil)
+  provisioners = search(:node, "roles:provisioner-server")
+  provisioner = provisioners[0] if provisioners
+  web_port = provisioner["provisioner"]["web_port"]
+  address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(provisioner, "admin").address
+  provisioner_server = "#{address}:#{web_port}"
+  log("Provisioner server info is #{provisioner_server}")
+  node[:crowbar_wall][:provisioner_server] = provisioner_server
+  node.save 
+end
 return unless provisioner_server
 
 include_recipe "bios::bios-tools"
