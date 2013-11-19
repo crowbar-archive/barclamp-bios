@@ -38,8 +38,8 @@ problem_file = "/var/log/chef/hw-problem.log"
 product = node[:dmi][:system][:product_name]
 product.strip!
 %w{bios bmc}.each do |t|
-  next unless (node["bios"]["updaters"][product][t] rescue nil)
-  f = node["bios"]["updaters"][product][t]
+  next unless (node["dell_bios"]["updaters"][product][t] rescue nil)
+  f = node["dell_bios"]["updaters"][product][t]
   if f.include?('/')
     directory "/tmp/#{f.split('/')[0..-2].join('/')}" do
       recursive true
