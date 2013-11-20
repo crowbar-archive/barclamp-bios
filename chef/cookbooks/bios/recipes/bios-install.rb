@@ -16,6 +16,20 @@
 include_recipe "bios::bios-common"
 
 provisioner_server = (node[:crowbar_wall][:provisioner_server] rescue nil)
+if (provisioner_server == nil)
+  provisioners = search(:node, "roles:provisioner-server")
+  provisioner = provisioners[0] if provisioners
+  if (provisioner != nil)
+    web_port = provisioner["provisioner"]["web_port"]
+    address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(provisioner, "admin").address
+    provisioner_server = "#{address}:#{web_port}"
+    log("Provisioner server info is #{provisioner_server}")
+    node[:crowbar_wall][:provisioner_server] = provisioner_server
+    node.save 
+  else
+    log("Provisioner server info could not be retrieved")
+  end
+end
 return unless provisioner_server
 
 include_recipe "bios::bios-tools"
@@ -24,8 +38,8 @@ problem_file = "/var/log/chef/hw-problem.log"
 product = node[:dmi][:system][:product_name]
 product.strip!
 %w{bios bmc}.each do |t|
-  next unless (node["bios"]["updaters"][product][t] rescue nil)
-  f = node["bios"]["updaters"][product][t]
+  next unless (node["dell_bios"]["updaters"][product][t] rescue nil)
+  f = node["dell_bios"]["updaters"][product][t]
   if f.include?('/')
     directory "/tmp/#{f.split('/')[0..-2].join('/')}" do
       recursive true
@@ -42,7 +56,7 @@ bios_update "bmc" do
   type            "bmc"
   problem_file    problem_file
   product         product
-  max_tries       node[:bios][:max_tries]
+  max_tries       node[:dell_bios][:max_tries]
   only_if         { @@bmc_update_enable }
   action   :update
 end
@@ -52,7 +66,7 @@ bios_update "bios" do
   type            "bios"
   problem_file    problem_file
   product         product
-  max_tries       node[:bios][:max_tries]
+  max_tries       node[:dell_bios][:max_tries]
   only_if         { @@bios_update_enable }
   action   :update
 end
@@ -61,7 +75,7 @@ bios_update "wsman" do
   type           "wsman"
   problem_file    problem_file
   product         product
-  max_tries       node[:bios][:max_tries]
+  max_tries       node[:dell_bios][:max_tries]
   only_if         { @@bios_update_enable }
   action   :update
 end

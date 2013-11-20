@@ -294,8 +294,8 @@ action :update do
   # Do wsman style if enabled for it (but only it).
   # Otherwise attempt to do the types as they come in.
   #
-  wsman = node["bios"]["updaters"][product]["wsman"] rescue nil
-  update = node["bios"]["updaters"][product][type] rescue nil
+  wsman = node["dell_bios"]["updaters"][product]["wsman"] rescue nil
+  update = node["dell_bios"]["updaters"][product][type] rescue nil
   if (update and type == "wsman")
     begin
       break unless can_try_again(type,max_tries)
