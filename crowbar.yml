@@ -31,7 +31,7 @@ crowbar:
 locale_additions:
   en:
     barclamp:
-      bios:
+      dell_bios:
         edit_deployment: 
           deployment: Deployment
         edit_attributes:
