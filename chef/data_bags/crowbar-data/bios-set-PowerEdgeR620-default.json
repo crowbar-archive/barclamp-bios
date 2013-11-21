@@ -123,7 +123,7 @@
         "ProcVirtualization": {
           "attr_name": "ProcVirtualization",
           "GroupID": "ProcSettings",
-          "value": "Disabled",
+          "value": "Enabled",
           "instance_id": "BIOS.Setup.1-1:ProcVirtualization",
           "DefaultValue": null
         },
@@ -179,7 +179,7 @@
         "NmiButton": {
           "attr_name": "NmiButton",
           "GroupID": "SysSecurity",
-          "value": "Enabled",
+          "value": "Disabled",
           "instance_id": "BIOS.Setup.1-1:NmiButton",
           "DefaultValue": null
         },
@@ -214,7 +214,7 @@
         "ReportKbdErr": {
           "attr_name": "ReportKbdErr",
           "GroupID": "MiscSettings",
-          "value": "NoReport",
+          "value": "Report",
           "instance_id": "BIOS.Setup.1-1:ReportKbdErr",
           "DefaultValue": null
         },
@@ -291,7 +291,7 @@
         "EmbSata": {
           "attr_name": "EmbSata",
           "GroupID": "SataSettings",
-          "value": "AhciMode",
+          "value": "Off",
           "instance_id": "BIOS.Setup.1-1:EmbSata",
           "DefaultValue": null
         },
@@ -424,14 +424,14 @@
         "NumLock": {
           "attr_name": "NumLock",
           "GroupID": "MiscSettings",
-          "value": "Off",
+          "value": "On",
           "instance_id": "BIOS.Setup.1-1:NumLock",
           "DefaultValue": null
         },
         "InSystemCharacterization": {
           "attr_name": "InSystemCharacterization",
           "GroupID": "MiscSettings",
-          "value": "Disabled",
+          "value": "Enabled",
           "instance_id": "BIOS.Setup.1-1:InSystemCharacterization",
           "DefaultValue": null
         },
@@ -515,7 +515,7 @@
         "SerialComm": {
           "attr_name": "SerialComm",
           "GroupID": "SerialCommTitle",
-          "value": "OnNoConRedir",
+          "value": "OnConRedirCom2",
           "instance_id": "BIOS.Setup.1-1:SerialComm",
           "DefaultValue": null
         },
@@ -613,7 +613,7 @@
         "SriovGlobalEnable": {
           "attr_name": "SriovGlobalEnable",
           "GroupID": "IntegratedDevices",
-          "value": "Disabled",
+          "value": "Enabled",
           "instance_id": "BIOS.Setup.1-1:SriovGlobalEnable",
           "DefaultValue": null
         },
@@ -623,6 +623,13 @@
           "value": "Last",
           "instance_id": "BIOS.Setup.1-1:AcPwrRcvry",
           "DefaultValue": null
+        },
+        "QpiSpeed": {
+          "GroupID": "ProcSettings",
+          "value": "MaxDataRate",
+          "DefaultValue": null,
+          "instance_id": "BIOS.Setup.1-1:QpiSpeed",
+          "attr_name": "QpiSpeed"
         },
         "SataPortFCapacity": {
           "attr_name": "SataPortFCapacity",
@@ -1286,7 +1293,7 @@
         "FloppyEmulation": {
           "attr_name": "FloppyEmulation",
           "GroupID": "VirtualMedia.1",
-          "value": "Enabled",
+          "value": "Disabled",
           "instance_id": "iDRAC.Embedded.1#VirtualMedia.1#FloppyEmulation",
           "DefaultValue": "Disabled"
         },
@@ -1364,7 +1371,7 @@
         "AdminState": {
           "attr_name": "AdminState",
           "GroupID": "OS-BMC.1",
-          "value": "Enabled",
+          "value": "Disabled",
           "instance_id": "iDRAC.Embedded.1#OS-BMC.1#AdminState",
           "DefaultValue": "Disabled"
         }
@@ -1850,13 +1857,6 @@
           "instance_id": "NIC.Integrated.1-1-1:SecondTgtIscsiName",
           "DefaultValue": null
         },
-        "MacAddr": {
-          "attr_name": "MacAddr",
-          "GroupID": "VndrConfigPage",
-          "value": "84:2B:2B:FF:FC:30",
-          "instance_id": "NIC.Integrated.1-1-1:MacAddr",
-          "DefaultValue": null
-        },
         "SecondTgtChapPwd": {
           "attr_name": "SecondTgtChapPwd",
           "GroupID": "IscsiSecondTgtParams",
@@ -1918,13 +1918,6 @@
           "GroupID": "VndrConfigPage",
           "value": "Unavailable",
           "instance_id": "NIC.Integrated.1-1-1:TXBandwidthControlMinimum",
-          "DefaultValue": null
-        },
-        "VirtMacAddr": {
-          "attr_name": "VirtMacAddr",
-          "GroupID": "VndrConfigPage",
-          "value": "84:2B:2B:FF:FC:30",
-          "instance_id": "NIC.Integrated.1-1-1:VirtMacAddr",
           "DefaultValue": null
         },
         "WakeOnLan": {
