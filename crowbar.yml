@@ -21,6 +21,7 @@ barclamp:
   version: 0
   member:
     - dell_branding
+    - crowbar
 
 crowbar:
   layout: 1
