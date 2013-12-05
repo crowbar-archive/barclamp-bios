@@ -29,9 +29,9 @@
                  "bios":  "6220/C6220_BIOS_NXJXX_LN32_1.1.19.BIN",
                  "bmc":   "6220/C6220_ESM_Firmware_9JJW3_LN32_2.02.BIN"
               },
-              "PowerEdge C8000": {
-                 "bios": "8000/BIOS_PM83C_LN32_1.1.19.BIN",
-                 "bmc":  "8000/C8000_ESM_Firmware_5P4TF_LN32_2.03.BIN"
+              "PowerEdge C8220": {
+                 "bios": "8000/C8000_BIOS_J3KJW_LN_2.1.2.BIN",
+                 "bmc":  "8000/ESM_Firmware_V4DTW_LN32_2.25.BIN"
               },
               "PowerEdge R610" : {
                  "wsman": "true"
