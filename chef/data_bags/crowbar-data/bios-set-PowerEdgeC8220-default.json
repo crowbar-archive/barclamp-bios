@@ -1,6 +1,6 @@
 {
   "versions": [
-    "1.0.24"
+    "1.0.24", "2.1.2"
   ],
   "style": "unified_pec",
   "id": "bios-set-PowerEdgeC8220-default",
