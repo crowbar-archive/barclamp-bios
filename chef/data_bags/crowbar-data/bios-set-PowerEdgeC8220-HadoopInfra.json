@@ -3,7 +3,7 @@
     "1.0.24"
   ],
   "style": "unified_pec",
-  "id": "bios-set-PowerEdgeC8220-Storage",
+  "id": "bios-set-PowerEdgeC8220-HadoopInfra",
   "attributes": {
     "virtualization_technology": "disabled",
     "vt_for_direct_io": "disabled",
@@ -12,12 +12,7 @@
     "boot_device_1": "network",
     "boot_device_2": "hard_disk",
     "boot_device_3": "raid",
-    "embedded_sata_controller": "ahci",
-    "sata_port0": "auto",
-    "sata_port1": "auto",
-    "sata_port2": "auto",
-    "sata_port3": "auto",
-    "sata_port4": "auto",
-    "sata_port5": "auto"
+    "embedded_sata_controller": "off"
+
   }
 }
