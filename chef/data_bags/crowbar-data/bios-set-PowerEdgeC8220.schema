@@ -792,7 +792,7 @@
             "enabled"
           ]
         },
-        "bmc_nic_ip_source: {
+        "bmc_nic_ip_source": {
           "required": false,
           "type": "str",
           "enum": [
@@ -800,7 +800,7 @@
             "dhcp"
           ]
         },
-        "bmc_lan_port_configuration: {
+        "bmc_lan_port_configuration": {
           "required": false,
           "type": "str",
           "enum": [
