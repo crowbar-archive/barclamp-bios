@@ -51,7 +51,6 @@
     "frequency_ratio": "auto",
     "turbo_mode": "enabled",
     "embedded_sata_link_rate": "auto",
-    "acpi_spmi_table": "enabled",
-    "nmi_on_error": "enabled"
+    "acpi_spmi_table": "enabled"
   }
 }
