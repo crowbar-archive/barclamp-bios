@@ -792,6 +792,22 @@
             "enabled"
           ]
         },
+        "bmc_nic_ip_source": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "static",
+            "dhcp"
+          ]
+        },
+        "bmc_lan_port_configuration": {
+          "required": false,
+          "type": "str",
+          "enum": [
+            "sharednic",
+            "dedicatednic"
+          ]
+        },
         "flow_control": {
           "required": false,
           "type": "str",

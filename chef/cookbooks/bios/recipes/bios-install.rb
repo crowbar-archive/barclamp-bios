@@ -46,7 +46,7 @@ product.strip!
     end
   end
   remote_file "/tmp/#{f}" do
-    source "#{provisioner_server}/files/dell_bios/#{f}"
+    source "http://#{provisioner_server}/files/dell_bios/#{f}"
     mode '0755'
     action :create_if_missing
   end

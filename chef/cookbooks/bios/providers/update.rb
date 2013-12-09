@@ -22,8 +22,8 @@ def check_avail(update,product,type)
     log ("no updater for #{type} on this (#{product}) platform") { level :warn }
     ret = nil
   else
-     # if we don't have the BIOS utility, we can't setup anything...
-    update = "/updates/#{update}"
+    # Ensure the file was downloaded before running the DUP (out of bios-install.rb)
+    update = "/tmp/#{update}"
     ret = update if ::File.exists?( update )
   end
   return ret
