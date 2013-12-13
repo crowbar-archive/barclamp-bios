@@ -1,0 +1,8 @@
+en:
+  barclamp:
+    dell_bios:
+      edit_attributes:
+        bios_setup_enable: Enable BIOS Setup
+        bios_update_enable: Enable BIOS Update
+        bmc_update_enable: Enable BMC firmware Update
+        debug: Enable Barclamp Debug
