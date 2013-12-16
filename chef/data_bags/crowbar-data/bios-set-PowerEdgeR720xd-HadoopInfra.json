@@ -10,6 +10,13 @@
           "DefaultValue": "",
           "attr_name": "ProcVirtualization",
           "GroupID": null
+        },
+        "SysProfile": {
+          "GroupID": "SysProfileSettings",
+          "value": "PerfOptimized",
+          "DefaultValue": null,
+          "instance_id": "BIOS.Setup.1-1:SysProfile",
+          "attr_name": "SysProfile"
         }
       }
     }
