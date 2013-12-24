@@ -1,23 +1,9 @@
+= attributes_for @proposal do
+  .panel-sub
+    = header @dep_raw, true
 
-%input#proposal_attributes{:type => "hidden", :name => "proposal_attributes", :value => @proposal.raw_data['attributes'][@proposal.barclamp].to_json}
-%p
-  %label{:for => "proposal_attributes"}= t('.attributes')
-  = link_to "Raw", proposal_barclamp_path(:id => @proposal.name, :controller => @proposal.barclamp, :dep_raw => @dep_raw, :attr_raw => true), :style => "float: right;"
-  %div.container
-    %p
-      %label{ :for => :bios_setup_enable }= t('.bios_setup_enable')
-      = select_tag :bios_setup_enable, options_for_select([['true','true'], ['false', 'false']], @proposal.raw_data['attributes'][@proposal.barclamp]["bios_setup_enable"].to_s), :onchange => "update_value('bios_setup_enable', 'bios_setup_enable', 'boolean')"
-
-    %p
-      %label{ :for => :bios_update_enable }= t('.bios_update_enable')
-      = select_tag :bios_update_enable, options_for_select([['true','true'], ['false', 'false']], @proposal.raw_data['attributes'][@proposal.barclamp]["bios_update_enable"].to_s), :onchange => "update_value('bios_update_enable', 'bios_update_enable', 'boolean')"
-
-    %p
-      %label{ :for => :bmc_update_enable }= t('.bmc_update_enable')
-      = select_tag :bmc_update_enable, options_for_select([['true','true'], ['false', 'false']], @proposal.raw_data['attributes'][@proposal.barclamp]["bmc_update_enable"].to_s), :onchange => "update_value('bmc_update_enable', 'bmc_update_enable', 'boolean')"
-
-    %p
-      %label{ :for => :debug }= t('.debug')
-      = select_tag :debug, options_for_select([['true','true'], ['false', 'false']], @proposal.raw_data['attributes'][@proposal.barclamp]["debug"].to_s), :onchange => "update_value('debug', 'debug', 'boolean')"
-
-
+  .panel-body
+    = boolean_field :bios_setup_enable
+    = boolean_field :bios_update_enable
+    = boolean_field :bmc_update_enable
+    = boolean_field :debug
