@@ -25,14 +25,8 @@ node["crowbar_wall"]["status"]["bios"] = []
 
 @@debug = node[:dell_bios][:debug]
 
-centos = ubuntu = false
-platform = node[:platform]
-case platform
-  when "centos", "redhat"
-  centos = true
-  when "ubuntu"
-  ubuntu = true
-end
+centos = node.platform_family == "redhat"
+ubuntu = node.platform == "ubuntu"
 
 log("BIOS: running on OS:[#{platform}] on #{node[:dmi][:system][:product_name]} hardware") { level :info} 
 
