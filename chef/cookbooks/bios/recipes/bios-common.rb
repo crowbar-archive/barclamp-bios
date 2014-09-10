@@ -1,4 +1,5 @@
 # Copyright (c) 2013 Dell Inc.
+# Copyright (c) 2014 SUSE Linux GmbH.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,10 +37,10 @@ end
 log("BIOS: running on OS:[#{platform}] on #{node[:dmi][:system][:product_name]} hardware") { level :info} 
 
 
-## enforce platfrom limitations
-@@bios_setup_enable = node[:dell_bios][:bios_setup_enable] & centos & !@@is_admin
-@@bios_update_enable = node[:dell_bios][:bios_update_enable] & centos & !@@is_admin
-@@bmc_update_enable = node[:dell_bios][:bmc_update_enable] & centos & !@@is_admin
+## enforce platform limitations
+@@bios_setup_enable = node[:dell_bios][:bios_setup_enable] & centos & !CrowbarHelper.is_admin? node
+@@bios_update_enable = node[:dell_bios][:bios_update_enable] & centos & !CrowbarHelper.is_admin? node
+@@bmc_update_enable = node[:dell_bios][:bmc_update_enable] & centos & !CrowbarHelper.is_admin? node
 
 
 node["crowbar_wall"]["status"]["bios"] << "Bios Barclamp using centos:#{centos} ubuntu:#{ubuntu}"
