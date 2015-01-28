@@ -28,13 +28,13 @@ node["crowbar_wall"]["status"]["bios"] = []
 centos = node.platform_family == "redhat"
 ubuntu = node.platform == "ubuntu"
 
-log("BIOS: running on OS:[#{platform}] on #{node[:dmi][:system][:product_name]} hardware") { level :info} 
+log("BIOS: running on OS:[#{platform}] on #{node[:dmi][:system][:product_name]} hardware") { level :info}
 
 
 ## enforce platform limitations
-@@bios_setup_enable = node[:dell_bios][:bios_setup_enable] & centos & !CrowbarHelper.is_admin? node
-@@bios_update_enable = node[:dell_bios][:bios_update_enable] & centos & !CrowbarHelper.is_admin? node
-@@bmc_update_enable = node[:dell_bios][:bmc_update_enable] & centos & !CrowbarHelper.is_admin? node
+@@bios_setup_enable = node[:dell_bios][:bios_setup_enable] & centos & !CrowbarHelper.is_admin?(node)
+@@bios_update_enable = node[:dell_bios][:bios_update_enable] & centos & !CrowbarHelper.is_admin?(node)
+@@bmc_update_enable = node[:dell_bios][:bmc_update_enable] & centos & !CrowbarHelper.is_admin?(node)
 
 
 node["crowbar_wall"]["status"]["bios"] << "Bios Barclamp using centos:#{centos} ubuntu:#{ubuntu}"
