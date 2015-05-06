@@ -43,7 +43,7 @@ class DellBiosService < ServiceObject
 
   def add_role(inst, name, state, new_role)
     @logger.debug("DellBios transition: installed state for #{name} for #{state}")
-    db = ProposalObject.find_proposal "dell_bios", inst
+    db = Proposal.where(barclamp: "dell_bios", name: inst).first
     role = RoleObject.find_role_by_name "dell_bios-config-#{inst}"
     result = add_role_to_instance_and_node("dell_bios", inst, name, db, role, new_role )
     @logger.debug("DellBios transition: leaving from installed state for #{name} for #{state}")
